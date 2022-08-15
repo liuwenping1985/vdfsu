@@ -18,7 +18,9 @@ public class FormDataTransferController extends BaseController {
     }
 
     public ModelAndView listConfigItemList(HttpServletRequest request, HttpServletResponse response) {
+
         return null;
+
     }
 
     public ModelAndView triggerPush(HttpServletRequest request, HttpServletResponse response) {

@@ -7,7 +7,7 @@ package com.seeyon.apps.hlsj.service;
 public class VastDataConfigService {
 
 
-    
+
 
 
 
