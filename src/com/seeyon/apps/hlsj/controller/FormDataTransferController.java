@@ -14,16 +14,19 @@ import javax.servlet.http.HttpServletResponse;
 public class FormDataTransferController extends BaseController {
 
     public ModelAndView showTransLogList(HttpServletRequest request, HttpServletResponse response) {
+
         return null;
     }
 
     public ModelAndView listConfigItemList(HttpServletRequest request, HttpServletResponse response) {
+        
 
         return null;
 
     }
 
     public ModelAndView triggerPush(HttpServletRequest request, HttpServletResponse response) {
+
         return null;
     }
 

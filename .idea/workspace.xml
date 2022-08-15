@@ -20,22 +20,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="561434f9-81b0-49f1-be00-cb09a6c178e5" name="Default" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/lib1.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/classes.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/classes.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/lib.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/lib.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/sunjian/com/seeyon/apps/hlsj/controller/FormDataTransferController.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/sunjian/com/seeyon/apps/hlsj/controller/FormDataTransferController.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/sunjian/com/seeyon/apps/hlsj/listener/VastDataFormTransferListener.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/sunjian/com/seeyon/apps/hlsj/listener/VastDataFormTransferListener.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/com/seeyon/apps/hlsj/controller/FormDataTransferController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/seeyon/apps/hlsj/controller/FormDataTransferController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/seeyon/apps/hlsj/listener/VastDataFormTransferListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/seeyon/apps/hlsj/listener/VastDataFormTransferListener.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/seeyon/apps/hlsj/po/GenericDataItem.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/seeyon/apps/hlsj/po/GenericDataItem.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/seeyon/apps/hlsj/service/VastDataConfigService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/seeyon/apps/hlsj/service/VastDataConfigService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/seeyon/apps/hlsj/service/VastDataGenericService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/seeyon/apps/hlsj/service/VastDataGenericService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/seeyon/apps/hlsj/service/VastDataMappingService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/seeyon/apps/hlsj/service/VastDataMappingService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/seeyon/apps/hlsj/service/VastDataSAP.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/seeyon/apps/hlsj/service/VastDataSAP.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/seeyon/apps/hlsj/util/FileUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/seeyon/apps/hlsj/util/FileUtils.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/sunjian.iml" beforeDir="false" afterPath="$PROJECT_DIR$/sunjian.iml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -380,7 +365,7 @@
       <workItem from="1659685094775" duration="135000" />
       <workItem from="1659950749980" duration="849000" />
       <workItem from="1660229058035" duration="733000" />
-      <workItem from="1660563175777" duration="412000" />
+      <workItem from="1660563175777" duration="568000" />
     </task>
     <servers />
   </component>
