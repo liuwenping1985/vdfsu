@@ -1,0 +1,146 @@
+{
+  "code": "xmfxbg2022",
+  "targetTableName": "ORDR_oa2SAP",
+  "targetPkField": "Docentry",
+  "fields": [
+    {
+      "sourceFieldName": "field0001",
+      "sourceFieldType": "string",
+      "tableName": "formmain_21041",
+      "targetFieldName": "HTBH",
+      "targetFieldType": "string"
+    },{
+      "sourceFieldName": "field0063",
+      "sourceFieldType": "string",
+      "tableName": "formmain_21041",
+      "targetFieldName": "Docentry",
+      "targetFieldType": "string"
+    },{
+      "sourceFieldName": "field0002",
+      "sourceFieldType": "member",
+      "tableName": "formmain_21041",
+      "targetFieldName": "Owner",
+      "targetFieldType": "string"
+    },{
+      "sourceFieldName": "field0003",
+      "sourceFieldType": "float",
+      "tableName": "formmain_21041",
+      "targetFieldName": "HTJE13",
+      "targetFieldType": "float"
+    },{
+      "sourceFieldName": "field0004",
+      "sourceFieldType": "float",
+      "tableName": "formmain_21041",
+      "targetFieldName": "HTJE6",
+      "targetFieldType": "float"
+    },{
+      "sourceFieldName": "field0008",
+      "sourceFieldType": "float",
+      "tableName": "formmain_21041",
+      "targetFieldName": "HTJE0",
+      "targetFieldType": "float"
+    },{
+      "sourceFieldName": "field0014",
+      "sourceFieldType": "string",
+      "tableName": "formmain_21041",
+      "targetFieldName": "ZZYH",
+      "targetFieldType": "string"
+    },{
+      "sourceFieldName": "field0021",
+      "sourceFieldType": "enum",
+      "tableName": "formmain_21041",
+      "targetFieldName": "IsTQXD",
+      "targetFieldType": "string"
+    },{
+      "sourceFieldName": "field0023",
+      "sourceFieldType": "enum",
+      "tableName": "formmain_21041",
+      "targetFieldName": "HXFL",
+      "targetFieldType": "string"
+    },{
+      "sourceFieldName": "field0024",
+      "sourceFieldType": "enum",
+      "tableName": "formmain_21041",
+      "targetFieldName": "VDSHSFS",
+      "targetFieldType": "string"
+    },{
+      "sourceFieldName": "field0079",
+      "sourceFieldType": "enum",
+      "tableName": "formmain_21041",
+      "targetFieldName": "lsZLKH",
+      "targetFieldType": "string"
+    },{
+      "sourceFieldName": "field0011",
+      "sourceFieldType": "enum",
+      "tableName": "formmain_21041",
+      "targetFieldName": "lsTTXM",
+      "targetFieldType": "string"
+    }
+  ],
+  "slaves": [
+    {
+      "fields": [
+        {
+          "sourceFieldName": "field0007",
+          "sourceFieldType": "member",
+          "tableName": "formson_21054",
+          "targetFieldName": "SlpName",
+          "targetFieldType": "string"
+        },{
+          "sourceFieldName": "field0032",
+          "sourceFieldType": "float",
+          "tableName": "formson_21054",
+          "targetFieldName": "Rate",
+          "targetFieldType": "float"
+        },{
+          "sourceFieldName": "field0033",
+          "sourceFieldType": "enum",
+          "tableName": "formson_21054",
+          "targetFieldName": "ZhiJ",
+          "targetFieldType": "string"
+        },{
+          "sourceFieldName": "field0034",
+          "sourceFieldType": "member",
+          "tableName": "formson_21054",
+          "targetFieldName": "F_Approve",
+          "targetFieldType": "string"
+        },{
+          "sourceFieldName": "field0035",
+          "sourceFieldType": "member",
+          "tableName": "formson_21054",
+          "targetFieldName": "S_Approve",
+          "targetFieldType": "string"
+        }
+      ],
+      "tableName": "formson_21054",
+      "targetTableName": "RDR2_OA2SAP",
+      "targetPkField": "Docentry"
+    },{
+      "fields": [
+        {
+          "sourceFieldName": "field0006",
+          "sourceFieldType": "enum",
+          "tableName": "formson_21055",
+          "targetFieldName": "TJ",
+          "targetFieldType": "string"
+        },{
+          "sourceFieldName": "field0037",
+          "sourceFieldType": "float",
+          "tableName": "formson_21055",
+          "targetFieldName": "Day",
+          "targetFieldType": "float"
+        },{
+          "sourceFieldName": "field0038",
+          "sourceFieldType": "float",
+          "tableName": "formson_21055",
+          "targetFieldName": "Rate",
+          "targetFieldType": "float"
+        }
+      ],
+      "tableName": "formson_21055",
+      "targetTableName": "RDR1_OA2SAP",
+      "targetPkField": "Docentry"
+    }
+  ],
+  "tableName": "formmain_21041"
+}

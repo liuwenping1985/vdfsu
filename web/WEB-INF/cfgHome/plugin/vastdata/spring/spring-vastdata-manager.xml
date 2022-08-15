@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+<beans default-autowire="byName">
+    <bean id="vastDataGenericService"
+        class="com.seeyon.apps.vastdata.service.VastDataGenericService">
+        <property name="vastDataSapDao" ref="vastDataSapDao"></property>
+    </bean>
+    <bean id="VastDataFormTransferListener"
+          class="com.seeyon.apps.vastdata.listener.VastDataFormTransferListener">
+        <property name="vastDataGenericService" ref="vastDataGenericService"></property>
+    </bean>
+</beans>

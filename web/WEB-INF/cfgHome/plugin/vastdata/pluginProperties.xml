@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ctpConfig>
+	<vastdata>
+		<sap>
+            <!-- 需要做URL digest的URL注册，空格分隔1为uri地址，2为method（没有可以省略），3为digest参数名 -->
+            <driver>com.microsoft.sqlserver.jdbc.SQLServerDriver</driver>
+            <jdbcurl>jdbc:sqlserver://192.168.1.22:1433;DatabaseName=TransDB</jdbcurl>
+            <user>OAUser</user>
+            <pwd>Seadata6@1</pwd>
+        </sap>
+	</vastdata>
+</ctpConfig>
