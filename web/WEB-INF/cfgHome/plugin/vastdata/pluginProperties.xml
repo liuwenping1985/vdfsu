@@ -15,5 +15,7 @@
             <user>OAUser</user>
             <pwd>OAUser@Seadata.com.cn</pwd>
         </sap2>
+        <xmfxbg2022>com.seeyon.apps.vastdata.dao.Xmfxbg2022DbDelegate</xmfxbg2022>
+        <xmfxbgxg2022>com.seeyon.apps.vastdata.dao.Xmfxbgxg2022DbDelegate</xmfxbgxg2022>
 	</vastdata>
 </ctpConfig>
