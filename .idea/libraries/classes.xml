@@ -1,7 +1,7 @@
 <component name="libraryTable">
   <library name="classes">
     <CLASSES>
-      <root url="file://$PROJECT_DIR$/../../../Seeyon/A8/ApacheJetspeed/webapps/seeyon/WEB-INF/classes" />
+      <root url="file://$PROJECT_DIR$/../lib4oa/8.1/WEB-INF/classes" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />

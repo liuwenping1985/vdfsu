@@ -47,32 +47,6 @@ public class WebUtil {
         //lamda;；
         try {
             out = response.getWriter();
-            out.write(JSON.toJSONString(data, SerializerFeature.DisableCircularReferenceDetect));
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            try {
-                if (out != null) {
-                    out.close();
-                }
-            } finally {
-
-            }
-
-        }
-    }
-
-    public static void responseJSONStriong(Object data, HttpServletResponse response) {
-        processCrossOriginResponse(response);
-        response.setContentType("application/json;charset=UTF-8");
-        response.setHeader("Cache-Control",
-                "no-store, max-age=0, no-cache, must-revalidate");
-        response.addHeader("Cache-Control", "post-check=0, pre-check=0");
-        response.setHeader("Pragma", "no-cache");
-        PrintWriter out = null;
-        //lamda;；
-        try {
-            out = response.getWriter();
             out.write(JSON.toJSONString(data));
         } catch (IOException e) {
             e.printStackTrace();
@@ -88,6 +62,33 @@ public class WebUtil {
         }
     }
 
+//    public static void responseJSONStriong(Object data, HttpServletResponse response) {
+//        processCrossOriginResponse(response);
+//        response.setContentType("application/json;charset=UTF-8");
+//        response.setHeader("Cache-Control",
+//                "no-store, max-age=0, no-cache, must-revalidate");
+//        response.addHeader("Cache-Control", "post-check=0, pre-check=0");
+//        response.setHeader("Pragma", "no-cache");
+//        PrintWriter out = null;
+//        //lamda;；
+//        try {
+//            out = response.getWriter();
+//            out.write(JSON.toJSONString(data));
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        } finally {
+//            try {
+//                if (out != null) {
+//                    out.close();
+//                }
+//            } finally {
+//
+//            }
+//
+//        }
+//    }
+    private static final Pattern PATN = Pattern.compile("([A-Za-z\\d]+)(_)?");
+
     /**
      * 下划线转驼峰法(默认小驼峰)
      *
@@ -100,8 +101,8 @@ public class WebUtil {
             return "";
         }
         StringBuffer sb = new StringBuffer();
-        Pattern pattern = Pattern.compile("([A-Za-z\\d]+)(_)?");
-        Matcher matcher = pattern.matcher(line);
+
+        Matcher matcher = PATN.matcher(line);
         //匹配正则表达式
         while (matcher.find()) {
             String word = matcher.group();
@@ -135,8 +136,8 @@ public class WebUtil {
         line = String.valueOf(line.charAt(0)).toUpperCase()
                 .concat(line.substring(1));
         StringBuffer sb = new StringBuffer();
-        Pattern pattern = Pattern.compile("[A-Z]([a-z\\d]+)?");
-        Matcher matcher = pattern.matcher(line);
+       // Pattern pattern = PATN.compile("[A-Z]([a-z\\d]+)?");
+        Matcher matcher = PATN.matcher(line);
         while (matcher.find()) {
             String word = matcher.group();
             sb.append(word.toUpperCase());

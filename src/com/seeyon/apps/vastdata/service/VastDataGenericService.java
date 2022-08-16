@@ -1,5 +1,6 @@
 package com.seeyon.apps.vastdata.service;
 
+import com.alibaba.fastjson.JSON;
 import com.seeyon.apps.vastdata.dao.VastDataSapDao;
 import com.seeyon.apps.vastdata.util.WebUtil;
 import com.seeyon.apps.vastdata.vo.FieldMappingVo;
@@ -37,14 +38,20 @@ public class VastDataGenericService {
     }
 
     public void processData(String code , Long affairId ){
+
         //获取oa数据
+        LOG.info("开始查询OA数据");
         Map oaData = fetchOAData(code, affairId);
+        LOG.info("OA数据查询完毕:"+oaData);
         //获取映射配置
         FormMappingVo cfg = VastDataMappingService.getInstance().getCfg(code);
         //这就是最后的结果 mainData
+        LOG.info("开始处理OA主表数据");
         Map mainData = mappingValue(oaData, cfg);
+        LOG.info("处理OA主表数据完毕:"+mainData);
         //处理子表
         if (!CollectionUtils.isEmpty(cfg.getSlaves())) {
+            LOG.info("开始处理OA子表数据");
             List<SlaveFormMappingVo> sfmList = cfg.getSlaves();
             Map slaveDatas = (Map)oaData.get("slaves");
             for (SlaveFormMappingVo sfmv : sfmList) {
@@ -54,12 +61,15 @@ public class VastDataGenericService {
                     Map tsd = mappingValue(ssData, sfmv);
                     targetSlaveData.add(tsd);
                 }
-                String tarName = sfmv.getTargetName();
+                String tarName = sfmv.getTargetTableName();
                 mainData.put(tarName,targetSlaveData);
             }
+            LOG.info("处理OA子表数据结束:"+mainData);
 
         }
+        LOG.info("向SAP表插入");
         vastDataSapDao.insertOrUpdate(cfg,mainData);
+        LOG.info("向SAP表插入结束");
 
     }
 
@@ -70,13 +80,15 @@ public class VastDataGenericService {
      */
     public static Map fetchOAData(String oaTemplateNo, Long affairId) {
         //第一步查出来数据
-        JDBCAgent agent = new JDBCAgent(false, true);
+        JDBCAgent agent = new JDBCAgent();
         try {
+
             String sql = "select form_recordid from ctp_affair where id=" + affairId;
+            LOG.info("formmain id query sql:"+sql);
             agent.execute(sql);
             Map idMap = agent.resultSetToMap();
             if (!CollectionUtils.isEmpty(idMap)) {
-                //主表id
+                //主表idform_recordid
                 Long id = Long.valueOf(String.valueOf(idMap.get("form_recordid")));
                 if (id == null) {
                     throw new RuntimeException("主表id为空，严重错误");
@@ -85,9 +97,11 @@ public class VastDataGenericService {
                 FormMappingVo formMappingVo = VastDataMappingService.getInstance().getCfg(oaTemplateNo);
                 if (formMappingVo != null) {
                     String sql2 = "select * from " + formMappingVo.getTableName() + " where id=" + id;
+                    LOG.info("query form data sql:"+sql2);
                     agent.execute(sql2);
                     //主表数据
                     Map data = agent.resultSetToMap();
+                    LOG.info("query form data:"+data);
                     //子表结构
                     List<SlaveFormMappingVo> slaves = formMappingVo.getSlaves();
                     //不为空表示有子表
@@ -96,9 +110,12 @@ public class VastDataGenericService {
                         //数据结构为：子表code：List<Map>
                         Map slaveData = new HashMap();
                         for (FormMappingVo slave : slaves) {
+
                             String sql3 = "select * from " + slave.getTableName() + " where formmain_id=" + id;
+                            LOG.info("query slave form data:"+sql3);
                             agent.execute(sql3);
                             List<Map> slaveDataList = agent.resultSetToList();
+                            LOG.info("slave form data:"+ JSON.toJSONString(slaveDataList));
                             //关键点：子表用的表名作为key存储的
                             slaveData.put(slave.getTableName(), slaveDataList);
                         }
@@ -106,9 +123,12 @@ public class VastDataGenericService {
                         data.put("slaves", slaveData);
 
                     }
+                    LOG.info("data is "+data);
                     return data;
                 }
 
+            }else{
+                LOG.info(" no formmain id is found!");
             }
 
         } catch (Exception e) {
@@ -157,6 +177,15 @@ public class VastDataGenericService {
                     Float f = WebUtil.getFloat(val);
                     if(f!=null){
                         retMap.put(fName, f);
+                    }else{
+                        retMap.put(fName, val);
+                    }
+                    break;
+                }
+                case "int":{
+                    Integer fint = WebUtil.getInteger(val);
+                    if(fint!=null){
+                        retMap.put(fName, fint);
                     }else{
                         retMap.put(fName, val);
                     }

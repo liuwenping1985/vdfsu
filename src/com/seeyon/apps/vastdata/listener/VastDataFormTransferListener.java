@@ -32,11 +32,12 @@ public class VastDataFormTransferListener {
 
 
 
-    @ListenEvent(event = CollaborationFinishEvent.class, async = true, mode = EventTriggerMode.afterCommit)
+    @ListenEvent(event = CollaborationFinishEvent.class)
     public void onFinish(CollaborationFinishEvent finishEvent) {
 
         try {
            String templateCode = finishEvent.getTemplateCode();
+            LOG.info("vastdata:"+templateCode+",affairId:"+finishEvent.getAffairId());
            if(!StringUtils.isEmpty(templateCode)){
                VastDataMappingService vdms = VastDataMappingService.getInstance();
                FormMappingVo fmv = vdms.getCfg(templateCode);
@@ -44,36 +45,40 @@ public class VastDataFormTransferListener {
                    Long affairId = finishEvent.getAffairId();
                    LOG.info("trigger a finish event for [templateCode:"+templateCode+"][affairId:"+finishEvent.getAffairId()+"]");
                    vastDataGenericService.processData(templateCode,affairId);
+               }else{
+                   LOG.info("vastdata cfg not found:"+templateCode+",affairId:"+finishEvent.getAffairId());
                }
            }
-        } catch (BusinessException e) {
-            e.printStackTrace();
+        } catch (Exception|Error e) {
+            LOG.error("FBI WARNING:"+e.getMessage(),e);
         }
 
 
     }
 
-    @ListenEvent(event = CollaborationProcessEvent.class, async = true, mode = EventTriggerMode.afterCommit)
-    public void onProcess(CollaborationProcessEvent processEvent) {
-        try {
-            String templateCode = processEvent.getTemplateCode();
-        } catch (BusinessException e) {
-            e.printStackTrace();
-        }
-
-    }
-
-    @ListenEvent(event = CollaborationStartEvent.class, async = true, mode = EventTriggerMode.afterCommit)
-    public void onStart(CollaborationStartEvent startEvent) {
-        try {
-            ///1.0/cGIyMzQ1Njc=
-            String templateCode = startEvent.getTemplateCode();
-        } catch (BusinessException e) {
-            e.printStackTrace();
-        }
-
-
-    }
+//    @ListenEvent(event = CollaborationStartEvent.class)
+//    public void onStart(CollaborationStartEvent startEvent) {
+//        try {
+//            String templateCode = startEvent.getTemplateCode();
+//           Long affairId =  startEvent.getAffair().getId();
+//            LOG.info("vastdata:"+templateCode+",affairId:"+affairId);
+//            if(!StringUtils.isEmpty(templateCode)){
+//                VastDataMappingService vdms = VastDataMappingService.getInstance();
+//                FormMappingVo fmv = vdms.getCfg(templateCode);
+//                if(fmv!=null){
+//
+//                    LOG.info("trigger a finish event for [templateCode:"+templateCode+"][affairId:"+affairId+"]");
+//                    vastDataGenericService.processData(templateCode,affairId);
+//                }else{
+//                    LOG.info("vastdata cfg not found:"+templateCode+",affairId:"+affairId);
+//                }
+//            }
+//        } catch (Exception|Error e) {
+//            LOG.error("FBI WARNING:"+e.getMessage(),e);
+//        }
+//
+//
+//    }
 
     public static void main(String[] args) {
 

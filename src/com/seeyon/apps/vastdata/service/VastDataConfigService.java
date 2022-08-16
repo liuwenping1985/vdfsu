@@ -1,5 +1,9 @@
 package com.seeyon.apps.vastdata.service;
 
+import com.alibaba.fastjson.JSON;
+import com.seeyon.apps.vastdata.vo.FormMappingVo;
+import com.seeyon.ctp.util.TextEncoder;
+
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
@@ -12,12 +16,13 @@ public class VastDataConfigService {
 
     public static void main(String[] args) {
         try {
-            Class cls = Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
-            DriverManager.getConnection("jdbc:sqlserver://localhost:1433;DatabaseName=T283", "sa", "123");
-            if(cls!=null){
-                System.out.println("11111");
-            }
-        } catch (ClassNotFoundException | SQLException e) {
+
+                //VastDataMappingService vdms = VastDataMappingService.getInstance();
+                //FormMappingVo fmv = vdms.getCfg("xmfxbg2022");
+            System.out.println(TextEncoder.decode("/2.4/QvElyCwkwgBwGnNbGm3Z+w=="));
+
+
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }

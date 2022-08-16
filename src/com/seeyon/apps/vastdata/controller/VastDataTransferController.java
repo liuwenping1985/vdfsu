@@ -42,12 +42,18 @@ public class VastDataTransferController extends BaseController {
     }
 
     public ModelAndView oft(HttpServletRequest request, HttpServletResponse response) {
-        return null;
+        String page = request.getParameter("page");
+        if (page == null) {
+            page = "oft";
+        }
+        ModelAndView oft = new ModelAndView("apps/vastdata/" + page);
+        return oft;
     }
 
     public ModelAndView checkEnv(HttpServletRequest request, HttpServletResponse response) {
         //对方数据库链接
         //
+
         return null;
     }
 

@@ -11,10 +11,10 @@
       "targetFieldType": "string"
     },{
       "sourceFieldName": "field0063",
-      "sourceFieldType": "string",
+      "sourceFieldType": "int",
       "tableName": "formmain_21041",
       "targetFieldName": "Docentry",
-      "targetFieldType": "string"
+      "targetFieldType": "int"
     },{
       "sourceFieldName": "field0002",
       "sourceFieldType": "member",
@@ -125,10 +125,10 @@
           "targetFieldType": "string"
         },{
           "sourceFieldName": "field0037",
-          "sourceFieldType": "float",
+          "sourceFieldType": "int",
           "tableName": "formson_21055",
           "targetFieldName": "Day",
-          "targetFieldType": "float"
+          "targetFieldType": "int"
         },{
           "sourceFieldName": "field0038",
           "sourceFieldType": "float",

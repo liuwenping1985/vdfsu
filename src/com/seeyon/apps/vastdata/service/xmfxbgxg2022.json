@@ -12,10 +12,10 @@
     },
     {
       "sourceFieldName": "field0077",
-      "sourceFieldType": "string",
+      "sourceFieldType": "int",
       "tableName": "formmain_21179",
       "targetFieldName": "Docentry",
-      "targetFieldType": "string"
+      "targetFieldType": "int"
     },{
       "sourceFieldName": "field0004",
       "sourceFieldType": "member",
@@ -52,6 +52,12 @@
       "tableName": "formmain_21179",
       "targetFieldName": "IsTQXD",
       "targetFieldType": "string"
+    },{
+      "sourceFieldName": "field0023",
+      "sourceFieldType": "enum",
+      "tableName": "formmain_21179",
+      "targetFieldName": "IS_OLD_SAP",
+      "targetFieldType": "enum"
     },{
       "sourceFieldName": "field0020",
       "sourceFieldType": "enum",
