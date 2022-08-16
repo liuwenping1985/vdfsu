@@ -90,7 +90,7 @@ public abstract class AbstractDataBaseDelegate implements DataBaseDelegate {
             }
         }
         insertSQL.append("(" + insertKeys.toString() + ")");
-        insertSQL.append(" values(" + insertKeys.toString() + ")");
+        insertSQL.append(" values(" + insertValues.toString() + ")");
         LOG.info("insert sql:" + insertSQL.toString());
         return insertSQL.toString();
 
