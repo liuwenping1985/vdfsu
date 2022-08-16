@@ -6,6 +6,7 @@ import com.seeyon.apps.vastdata.vo.SlaveFormMappingVo;
 import com.seeyon.ctp.common.exceptions.BusinessException;
 import com.seeyon.ctp.common.log.CtpLogFactory;
 import com.seeyon.ctp.util.JDBCAgent;
+import com.seeyon.ctp.util.UUIDGenerator;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.springframework.util.CollectionUtils;
@@ -16,12 +17,16 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 public abstract class AbstractDataBaseDelegate implements DataBaseDelegate {
 
     private static final Log LOG = CtpLogFactory.getLog(AbstractDataBaseDelegate.class);
 
     protected String tv(Object val) {
+        if (val == null) {
+            return null;
+        }
         if (val instanceof String) {
             return "'" + val + "'";
         }
@@ -69,14 +74,14 @@ public abstract class AbstractDataBaseDelegate implements DataBaseDelegate {
 
     }
 
-    protected String buildInsertSQL(FormMappingVo fmv, Map data) {
+    protected String buildInsertSQL(FormMappingVo fmv, Map data, int index) {
         String tName = fmv.getTargetTableName();
         StringBuilder insertSQL = new StringBuilder("INSERT INTO " + tName);
         StringBuilder insertKeys = new StringBuilder();
         StringBuilder insertValues = new StringBuilder();
         for (FieldMappingVo field : fmv.getFields()) {
             Object val = data.get(field.getTargetFieldName());
-            if (val != null) {
+            if (val != null && !"null".equals(val)) {
                 if (StringUtils.isEmpty(insertKeys.toString())) {
                     insertKeys.append(field.getTargetFieldName());
                 } else {
@@ -86,6 +91,40 @@ public abstract class AbstractDataBaseDelegate implements DataBaseDelegate {
                     insertValues.append(tv(val));
                 } else {
                     insertValues.append(",").append(tv(val));
+                }
+            }
+        }
+        String pkF = fmv.getPkFiled();
+        if (pkF != null) {
+            String st = fmv.getPkFiledGenStrategy();
+            switch (st) {
+                case "auto_increase": {
+                    Long id = UUID.randomUUID().getMostSignificantBits();
+                    insertKeys.append(",").append(pkF);
+                    insertValues.append(",").append(id.intValue());
+                    break;
+                }
+                case "main": {
+                }
+                default: {
+                }
+            }
+        }
+        if (fmv instanceof SlaveFormMappingVo) {
+            SlaveFormMappingVo sfmv = (SlaveFormMappingVo) fmv;
+            List<FieldMappingVo> eFileds = sfmv.getExtendFields();
+            if (eFileds != null) {
+                for (FieldMappingVo f : eFileds) {
+                    String fName = f.getTargetFieldName();
+                    String fType = f.getTargetFieldType();
+                    if ("self_increase".equals(fType)) {
+                        insertKeys.append(",").append(fName);
+                        insertValues.append(",").append(index);
+                    }
+                    if ("main".equals(fType)) {
+                        insertKeys.append(",").append(fName);
+                        insertValues.append(",").append(data.get(fName));
+                    }
                 }
             }
         }
@@ -105,7 +144,7 @@ public abstract class AbstractDataBaseDelegate implements DataBaseDelegate {
         for (FieldMappingVo field : fmv.getFields()) {
             String tfn = field.getTargetFieldName();
             Object val = data.get(tfn);
-            if (val != null) {
+            if (val != null && !"null".equals(val)) {
                 if (updateKeys.toString().isEmpty()) {
                     updateKeys.append(tfn + "=" + tv(val));
                 } else {
@@ -125,7 +164,7 @@ public abstract class AbstractDataBaseDelegate implements DataBaseDelegate {
     }
 
     protected boolean insertData(Connection connection, FormMappingVo fmv, Map data) {
-        String insertSQL = buildInsertSQL(fmv, data);
+        String insertSQL = buildInsertSQL(fmv, data, 1);
         return executeUpdate(connection, insertSQL);
 
     }
@@ -204,9 +243,11 @@ public abstract class AbstractDataBaseDelegate implements DataBaseDelegate {
                 List<Map> dataList = (List<Map>) data.get(sfmv.getTargetTableName());
                 List<String> insertSQLList = new ArrayList<>();
                 if (!CollectionUtils.isEmpty(dataList)) {
+                    int index = 1;
                     for (Map dm : dataList) {
                         dm.put(pkf, pkVal);
-                        insertSQLList.add(buildInsertSQL(sfmv, dm));
+                        insertSQLList.add(buildInsertSQL(sfmv, dm, index));
+                        index++;
                     }
 
                 }

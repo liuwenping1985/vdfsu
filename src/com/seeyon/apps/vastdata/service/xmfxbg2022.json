@@ -2,6 +2,8 @@
   "code": "xmfxbg2022",
   "targetTableName": "ORDR_oa2SAP",
   "targetPkField": "Docentry",
+  "pkFiled":  "Docentry",
+  "pkFiledGenStrategy": "main",
   "fields": [
     {
       "sourceFieldName": "field0001",
@@ -67,13 +69,13 @@
       "sourceFieldName": "field0079",
       "sourceFieldType": "enum",
       "tableName": "formmain_21041",
-      "targetFieldName": "lsZLKH",
+      "targetFieldName": "IsZLKH",
       "targetFieldType": "string"
     },{
       "sourceFieldName": "field0011",
       "sourceFieldType": "enum",
       "tableName": "formmain_21041",
-      "targetFieldName": "lsTTXM",
+      "targetFieldName": "IsTTXM",
       "targetFieldType": "string"
     }
   ],
@@ -112,9 +114,27 @@
           "targetFieldType": "string"
         }
       ],
+      "extendFields": [
+        {
+          "sourceFieldName": "LineNum",
+          "sourceFieldType": "self_increase",
+          "tableName": "formson_21054",
+          "targetFieldName": "LineNum",
+          "targetFieldType": "self_increase"
+        },
+        {
+          "sourceFieldName": "Docentry",
+          "sourceFieldType": "main",
+          "tableName": "formson_21054",
+          "targetFieldName": "Docentry",
+          "targetFieldType": "main"
+        }
+      ],
       "tableName": "formson_21054",
       "targetTableName": "RDR2_OA2SAP",
-      "targetPkField": "Docentry"
+      "targetPkField": "Docentry",
+      "pkFiled":  "id",
+      "pkFiledGenStrategy": "auto_increase"
     },{
       "fields": [
         {
@@ -137,9 +157,27 @@
           "targetFieldType": "float"
         }
       ],
+      "extendFields": [
+        {
+          "sourceFieldName": "LineNum",
+          "sourceFieldType": "self_increase",
+          "tableName": "formson_21055",
+          "targetFieldName": "LineNum",
+          "targetFieldType": "self_increase"
+        },
+        {
+          "sourceFieldName": "Docentry",
+          "sourceFieldType": "main",
+          "tableName": "formson_21055",
+          "targetFieldName": "Docentry",
+          "targetFieldType": "main"
+        }
+      ],
       "tableName": "formson_21055",
       "targetTableName": "RDR1_OA2SAP",
-      "targetPkField": "Docentry"
+      "targetPkField": "Docentry",
+      "pkFiled":  "id",
+      "pkFiledGenStrategy": "auto_increase"
     }
   ],
   "tableName": "formmain_21041"

@@ -17,7 +17,8 @@ public class FormMappingVo {
     private String tableName;
     private String targetTableName;
     private String targetPkField;
-
+    private String pkFiled;
+    private String pkFiledGenStrategy;
     private List<FieldMappingVo> fields;
 
     private List<SlaveFormMappingVo> slaves;
@@ -40,6 +41,14 @@ public class FormMappingVo {
 
     public List<FieldMappingVo> getFields() {
         return fields;
+    }
+
+    public String getPkFiledGenStrategy() {
+        return pkFiledGenStrategy;
+    }
+
+    public void setPkFiledGenStrategy(String pkFiledGenStrategy) {
+        this.pkFiledGenStrategy = pkFiledGenStrategy;
     }
 
     public void setFields(List<FieldMappingVo> fields) {
@@ -68,6 +77,14 @@ public class FormMappingVo {
 
     public void setTargetPkField(String targetPkField) {
         this.targetPkField = targetPkField;
+    }
+
+    public String getPkFiled() {
+        return pkFiled;
+    }
+
+    public void setPkFiled(String pkFiled) {
+        this.pkFiled = pkFiled;
     }
 
     public static void main(String[] args) {
