@@ -46,7 +46,7 @@ public class VastDataTransferController extends BaseController {
         if (page == null) {
             page = "oft";
         }
-        ModelAndView oft = new ModelAndView("apps/vastdata/" + page);
+        ModelAndView oft = new ModelAndView("apps/com.seeyon.apps.vastdata/" + page);
         return oft;
     }
 

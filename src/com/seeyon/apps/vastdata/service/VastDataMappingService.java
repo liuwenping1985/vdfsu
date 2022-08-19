@@ -1,6 +1,7 @@
 package com.seeyon.apps.vastdata.service;
 
-import com.alibaba.fastjson.JSON;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.seeyon.apps.vastdata.vo.FormMappingVo;
 import com.seeyon.ctp.common.log.CtpLogFactory;
 import com.seeyon.ctp.util.IOUtility;
@@ -8,7 +9,6 @@ import org.apache.commons.logging.Log;
 
 import java.io.File;
 import java.io.FileReader;
-import java.io.IOException;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -39,10 +39,13 @@ public class VastDataMappingService {
         Arrays.stream(mappingFiles).forEach(file -> {
             try {
                 String content = IOUtility.toString(new FileReader(file));
-                FormMappingVo vo = JSON.parseObject(content, FormMappingVo.class);
+                ObjectMapper mapper = new ObjectMapper();
+                //JSON.parseObject()
+                FormMappingVo vo = mapper.readValue(content,FormMappingVo.class);
+                //FormMappingVo vo = JSON.parseObject(content, FormMappingVo.class);
                 LOG.info("put " + vo.getCode() + " to mapping service container!");
                 cfgContainer.put(vo.getCode(), vo);
-            } catch (IOException e) {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         });

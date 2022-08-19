@@ -1,11 +1,6 @@
 package com.seeyon.apps.vastdata.service;
 
-import com.alibaba.fastjson.JSON;
 import com.seeyon.apps.vastdata.vo.FormMappingVo;
-import com.seeyon.ctp.util.TextEncoder;
-
-import java.sql.DriverManager;
-import java.sql.SQLException;
 
 /**
  * 通用服务
@@ -17,9 +12,9 @@ public class VastDataConfigService {
     public static void main(String[] args) {
         try {
 
-                //VastDataMappingService vdms = VastDataMappingService.getInstance();
-                //FormMappingVo fmv = vdms.getCfg("xmfxbg2022");
-            System.out.println(TextEncoder.decode("/2.4/QvElyCwkwgBwGnNbGm3Z+w=="));
+                VastDataMappingService vdms = VastDataMappingService.getInstance();
+                FormMappingVo fmv = vdms.getCfg("xmfxbg2022");
+           // System.out.println(TextEncoder.decode("/2.4/QvElyCwkwgBwGnNbGm3Z+w=="));
 
 
         } catch (Exception e) {

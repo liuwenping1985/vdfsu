@@ -3,10 +3,8 @@ package com.seeyon.apps.vastdata.dao;
 import com.seeyon.apps.vastdata.vo.FieldMappingVo;
 import com.seeyon.apps.vastdata.vo.FormMappingVo;
 import com.seeyon.apps.vastdata.vo.SlaveFormMappingVo;
-import com.seeyon.ctp.common.exceptions.BusinessException;
 import com.seeyon.ctp.common.log.CtpLogFactory;
 import com.seeyon.ctp.util.JDBCAgent;
-import com.seeyon.ctp.util.UUIDGenerator;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.springframework.util.CollectionUtils;
@@ -17,7 +15,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 
 public abstract class AbstractDataBaseDelegate implements DataBaseDelegate {
 
@@ -99,9 +96,9 @@ public abstract class AbstractDataBaseDelegate implements DataBaseDelegate {
             String st = fmv.getPkFiledGenStrategy();
             switch (st) {
                 case "auto_increase": {
-                    Long id = UUID.randomUUID().getMostSignificantBits();
-                    insertKeys.append(",").append(pkF);
-                    insertValues.append(",").append(id.intValue());
+//                    Long id = UUID.randomUUID().getMostSignificantBits();
+//                    insertKeys.append(",").append(pkF);
+//                    insertValues.append(",").append(id.intValue());
                     break;
                 }
                 case "main": {
@@ -256,9 +253,17 @@ public abstract class AbstractDataBaseDelegate implements DataBaseDelegate {
                     JDBCAgent agent = new JDBCAgent(conn);
                     try {
                         insertSQLList.stream().forEach(obj -> {
-                            LOG.info("EXECUTE:" + obj);
+                            try {
+                                LOG.info("EXECUTE:" + obj);
+                               int ret =  agent.execute(obj);
+                                LOG.info("EXECUTE finish:" + ret);
+                            }catch(Exception e){
+                                e.printStackTrace();
+                                LOG.error("EXECUTE ERROR:"+e.getMessage(),e);
+                            }
+
                         });
-                        agent.executeBatch(insertSQLList);
+                       // agent.executeBatch(insertSQLList);
 
                     } catch (Exception e) {
                         e.printStackTrace();

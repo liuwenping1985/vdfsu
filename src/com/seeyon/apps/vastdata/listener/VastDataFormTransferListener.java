@@ -1,14 +1,10 @@
 package com.seeyon.apps.vastdata.listener;
 
 import com.seeyon.apps.collaboration.event.CollaborationFinishEvent;
-import com.seeyon.apps.collaboration.event.CollaborationProcessEvent;
-import com.seeyon.apps.collaboration.event.CollaborationStartEvent;
 import com.seeyon.apps.vastdata.service.VastDataGenericService;
 import com.seeyon.apps.vastdata.service.VastDataMappingService;
 import com.seeyon.apps.vastdata.vo.FormMappingVo;
-import com.seeyon.ctp.common.exceptions.BusinessException;
 import com.seeyon.ctp.common.log.CtpLogFactory;
-import com.seeyon.ctp.event.EventTriggerMode;
 import com.seeyon.ctp.util.annotation.ListenEvent;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
@@ -37,7 +33,7 @@ public class VastDataFormTransferListener {
 
         try {
            String templateCode = finishEvent.getTemplateCode();
-            LOG.info("vastdata:"+templateCode+",affairId:"+finishEvent.getAffairId());
+            LOG.info("com.seeyon.apps.vastdata:"+templateCode+",affairId:"+finishEvent.getAffairId());
            if(!StringUtils.isEmpty(templateCode)){
                VastDataMappingService vdms = VastDataMappingService.getInstance();
                FormMappingVo fmv = vdms.getCfg(templateCode);
@@ -46,7 +42,7 @@ public class VastDataFormTransferListener {
                    LOG.info("trigger a finish event for [templateCode:"+templateCode+"][affairId:"+finishEvent.getAffairId()+"]");
                    vastDataGenericService.processData(templateCode,affairId);
                }else{
-                   LOG.info("vastdata cfg not found:"+templateCode+",affairId:"+finishEvent.getAffairId());
+                   LOG.info("com.seeyon.apps.vastdata cfg not found:"+templateCode+",affairId:"+finishEvent.getAffairId());
                }
            }
         } catch (Exception|Error e) {
@@ -61,7 +57,7 @@ public class VastDataFormTransferListener {
 //        try {
 //            String templateCode = startEvent.getTemplateCode();
 //           Long affairId =  startEvent.getAffair().getId();
-//            LOG.info("vastdata:"+templateCode+",affairId:"+affairId);
+//            LOG.info("com.seeyon.apps.vastdata:"+templateCode+",affairId:"+affairId);
 //            if(!StringUtils.isEmpty(templateCode)){
 //                VastDataMappingService vdms = VastDataMappingService.getInstance();
 //                FormMappingVo fmv = vdms.getCfg(templateCode);
@@ -70,7 +66,7 @@ public class VastDataFormTransferListener {
 //                    LOG.info("trigger a finish event for [templateCode:"+templateCode+"][affairId:"+affairId+"]");
 //                    vastDataGenericService.processData(templateCode,affairId);
 //                }else{
-//                    LOG.info("vastdata cfg not found:"+templateCode+",affairId:"+affairId);
+//                    LOG.info("com.seeyon.apps.vastdata cfg not found:"+templateCode+",affairId:"+affairId);
 //                }
 //            }
 //        } catch (Exception|Error e) {

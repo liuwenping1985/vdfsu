@@ -26,10 +26,10 @@ public class VastDataSapDao {
         LOG.info("初始化SAP连接池");
         ComboPooledDataSource comboPooledDataSource = new ComboPooledDataSource();
         try {
-            comboPooledDataSource.setDriverClass(SystemProperties.getInstance().getProperty("vastdata.sap.driver"));
-            comboPooledDataSource.setJdbcUrl(SystemProperties.getInstance().getProperty("vastdata.sap.jdbcurl"));
-            comboPooledDataSource.setUser(SystemProperties.getInstance().getProperty("vastdata.sap.user"));
-            comboPooledDataSource.setPassword(SystemProperties.getInstance().getProperty("vastdata.sap.pwd"));
+            comboPooledDataSource.setDriverClass(SystemProperties.getInstance().getProperty("com.seeyon.apps.vastdata.sap.driver"));
+            comboPooledDataSource.setJdbcUrl(SystemProperties.getInstance().getProperty("com.seeyon.apps.vastdata.sap.jdbcurl"));
+            comboPooledDataSource.setUser(SystemProperties.getInstance().getProperty("com.seeyon.apps.vastdata.sap.user"));
+            comboPooledDataSource.setPassword(SystemProperties.getInstance().getProperty("com.seeyon.apps.vastdata.sap.pwd"));
             comboPooledDataSource.setInitialPoolSize(1);
             comboPooledDataSource.setMaxPoolSize(2);
             dataSource = comboPooledDataSource;
@@ -40,10 +40,10 @@ public class VastDataSapDao {
         LOG.info("初始化SAP2连接池");
         ComboPooledDataSource comboPooledDataSource2 = new ComboPooledDataSource();
         try {
-            comboPooledDataSource2.setDriverClass(SystemProperties.getInstance().getProperty("vastdata.sap2.driver"));
-            comboPooledDataSource2.setJdbcUrl(SystemProperties.getInstance().getProperty("vastdata.sap2.jdbcurl"));
-            comboPooledDataSource2.setUser(SystemProperties.getInstance().getProperty("vastdata.sap2.user"));
-            comboPooledDataSource2.setPassword(SystemProperties.getInstance().getProperty("vastdata.sap2.pwd"));
+            comboPooledDataSource2.setDriverClass(SystemProperties.getInstance().getProperty("com.seeyon.apps.vastdata.sap2.driver"));
+            comboPooledDataSource2.setJdbcUrl(SystemProperties.getInstance().getProperty("com.seeyon.apps.vastdata.sap2.jdbcurl"));
+            comboPooledDataSource2.setUser(SystemProperties.getInstance().getProperty("com.seeyon.apps.vastdata.sap2.user"));
+            comboPooledDataSource2.setPassword(SystemProperties.getInstance().getProperty("com.seeyon.apps.vastdata.sap2.pwd"));
             comboPooledDataSource2.setInitialPoolSize(1);
             comboPooledDataSource2.setMaxPoolSize(2);
             dataSource2 = comboPooledDataSource2;
@@ -58,6 +58,7 @@ public class VastDataSapDao {
         try {
 
             String delegateClass = AppContext.getSystemProperty("vastdata." + fmv.getCode());
+            LOG.info("获取代理类:"+delegateClass);
             if (!StringUtils.isEmpty(delegateClass)) {
                 Class cls = Class.forName(delegateClass);
                 Object obj = cls.newInstance();
@@ -69,7 +70,7 @@ public class VastDataSapDao {
             }
 
 
-        } catch (Exception e) {
+        } catch (Exception|Error e) {
             LOG.error("执行SAP传输失败", e);
         }
     }

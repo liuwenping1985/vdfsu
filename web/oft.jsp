@@ -6,7 +6,9 @@
 <%@ page import="com.seeyon.ctp.common.AppContext" %>
 <%@ page import="com.seeyon.apps.vastdata.dao.VastDataSapDao" %>
 <%@ page import="com.seeyon.ctp.common.constants.SystemProperties" %>
-<%@ page import="com.mchange.v2.c3p0.ComboPooledDataSource" %><%--
+<%@ page import="com.mchange.v2.c3p0.ComboPooledDataSource" %>
+<%@ page import="com.seeyon.apps.vastdata.service.VastDataMappingService" %>
+<%@ page import="com.seeyon.apps.vastdata.vo.FormMappingVo" %><%--
   Created by IntelliJ IDEA.
   User: liuwenping
   Date: 2022/8/5
@@ -30,20 +32,27 @@
     //WebUtil.responseJSON(idMap,response);
 
    // agent.close();
-    ComboPooledDataSource comboPooledDataSource = new ComboPooledDataSource();
-    comboPooledDataSource.setDriverClass(SystemProperties.getInstance().getProperty("vastdata.sap.driver"));
-    comboPooledDataSource.setJdbcUrl(SystemProperties.getInstance().getProperty("vastdata.sap.jdbcurl"));
-    comboPooledDataSource.setUser(SystemProperties.getInstance().getProperty("vastdata.sap.user"));
-    comboPooledDataSource.setPassword(SystemProperties.getInstance().getProperty("vastdata.sap.pwd"));
-    comboPooledDataSource.setInitialPoolSize(1);
-    comboPooledDataSource.setMaxPoolSize(2);
+//    ComboPooledDataSource comboPooledDataSource = new ComboPooledDataSource();
+//    comboPooledDataSource.setDriverClass(SystemProperties.getInstance().getProperty("vastdata.sap.driver"));
+//    comboPooledDataSource.setJdbcUrl(SystemProperties.getInstance().getProperty("vastdata.sap.jdbcurl"));
+//    comboPooledDataSource.setUser(SystemProperties.getInstance().getProperty("vastdata.sap.user"));
+//    comboPooledDataSource.setPassword(SystemProperties.getInstance().getProperty("vastdata.sap.pwd"));
+//    comboPooledDataSource.setInitialPoolSize(1);
+//    comboPooledDataSource.setMaxPoolSize(2);
+//
+//    //VastDataSapDao dao = (VastDataSapDao) AppContext.getBean("vastDataSapDao");
+//
+//    JDBCAgent agent = new JDBCAgent(comboPooledDataSource.getConnection());
+//    agent.execute("select * from ORDR_oa2SAP where Docentry=7900");
+//    WebUtil.responseJSON(agent.resultSetToList(),response);
+//    agent.close();
+    try {
+        VastDataMappingService vdms = new VastDataMappingService();
+        FormMappingVo fmv = vdms.getCfg("xmfxbg2022");
+    }catch(Error|Exception e){
+        e.printStackTrace();
+    }
 
-    //VastDataSapDao dao = (VastDataSapDao) AppContext.getBean("vastDataSapDao");
-
-    JDBCAgent agent = new JDBCAgent(comboPooledDataSource.getConnection());
-    agent.execute("select * from ORDR_oa2SAP where Docentry=7900");
-    WebUtil.responseJSON(agent.resultSetToList(),response);
-    agent.close();
 
 %>
 </body>

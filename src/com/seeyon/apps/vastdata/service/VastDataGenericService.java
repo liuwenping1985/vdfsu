@@ -11,7 +11,6 @@ import com.seeyon.ctp.organization.bo.V3xOrgMember;
 import com.seeyon.ctp.organization.dao.OrgHelper;
 import com.seeyon.ctp.util.JDBCAgent;
 import org.apache.commons.logging.Log;
-import org.apache.geode.distributed.internal.ConfigAttributeChecker;
 import org.springframework.util.CollectionUtils;
 
 import java.util.ArrayList;
