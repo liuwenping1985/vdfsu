@@ -12,6 +12,8 @@ public class Xmfxbg2022DbDelegate extends AbstractDataBaseDelegate {
 
     @Override
     public void delegate(DataSource dataSource, FormMappingVo fmv, Map data) {
+        LOG.info("调用Xmfxbg2022DbDelegate开始");
         super.delegate(dataSource,fmv,data);
+        LOG.info("调用Xmfxbg2022DbDelegate结束");
     }
 }
