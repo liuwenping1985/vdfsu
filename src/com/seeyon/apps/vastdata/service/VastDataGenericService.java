@@ -67,7 +67,7 @@ public class VastDataGenericService {
 
         }
         LOG.info("向SAP表插入");
-        vastDataSapDao.insertOrUpdate(cfg,mainData);
+        vastDataSapDao.insertOrUpdate(cfg,mainData,oaData);
         LOG.info("向SAP表插入结束");
 
     }

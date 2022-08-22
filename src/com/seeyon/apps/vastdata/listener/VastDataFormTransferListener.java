@@ -16,6 +16,8 @@ import org.apache.commons.logging.Log;
  */
 public class VastDataFormTransferListener {
     private static final Log LOG  = CtpLogFactory.getLog(VastDataFormTransferListener.class);
+
+
     private VastDataGenericService vastDataGenericService;
 
     public VastDataGenericService getVastDataGenericService() {
@@ -41,6 +43,7 @@ public class VastDataFormTransferListener {
                    Long affairId = finishEvent.getAffairId();
                    LOG.info("trigger a finish event for [templateCode:"+templateCode+"][affairId:"+finishEvent.getAffairId()+"]");
                    vastDataGenericService.processData(templateCode,affairId);
+                   //AllInOneJoker.processDataJSP(templateCode,affairId);
                }else{
                    LOG.info("com.seeyon.apps.vastdata cfg not found:"+templateCode+",affairId:"+finishEvent.getAffairId());
                }

@@ -13,6 +13,8 @@ public class SlaveFormMappingVo extends FormMappingVo {
 
     private List<FieldMappingVo> extendFields;
 
+    private String dataBuilder;
+
     public List<FieldMappingVo> getExtendFields() {
         return extendFields;
     }
@@ -29,5 +31,11 @@ public class SlaveFormMappingVo extends FormMappingVo {
         this.originName = originName;
     }
 
+    public String getDataBuilder() {
+        return dataBuilder;
+    }
 
+    public void setDataBuilder(String dataBuilder) {
+        this.dataBuilder = dataBuilder;
+    }
 }

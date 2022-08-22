@@ -7,5 +7,5 @@ import java.util.Map;
 
 public interface DataBaseDelegate {
 
-     void delegate(DataSource dataSource, FormMappingVo fmv, Map data);
+     void delegate(DataSource dataSource, FormMappingVo fmv, Map data,Map originData);
 }

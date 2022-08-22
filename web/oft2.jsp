@@ -537,18 +537,8 @@
 
 %>
 <%
-    boolean testUpdate = false;
-    Long affairId = 0L;
-    String code = "";
-    if (testUpdate) {
-        affairId = 1419979857962421898L;
-        code = "xmfxbgxg2022";
-    } else {
-        affairId = 2491995894716714494L;
-        code = "xmfxbg2022";
-    }
 
-    processDataJSP(code, affairId);
+    out.write(SystemProperties.getInstance().getProperty("vastdata.sap.driver"));
 
 
 %>

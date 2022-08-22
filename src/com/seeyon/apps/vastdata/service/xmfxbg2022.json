@@ -88,7 +88,8 @@
           "tableName": "formson_21054",
           "targetFieldName": "SlpName",
           "targetFieldType": "string"
-        },{
+        },
+        {
           "sourceFieldName": "field0032",
           "sourceFieldType": "float",
           "tableName": "formson_21054",
@@ -112,16 +113,15 @@
           "tableName": "formson_21054",
           "targetFieldName": "S_Approve",
           "targetFieldType": "string"
+        },{
+          "sourceFieldName": "sort",
+          "sourceFieldType": "int",
+          "tableName": "formson_21054",
+          "targetFieldName": "LineNum",
+          "targetFieldType": "int"
         }
       ],
       "extendFields": [
-        {
-          "sourceFieldName": "LineNum",
-          "sourceFieldType": "self_increase",
-          "tableName": "formson_21054",
-          "targetFieldName": "LineNum",
-          "targetFieldType": "self_increase"
-        },
         {
           "sourceFieldName": "Docentry",
           "sourceFieldType": "main",
@@ -135,7 +135,8 @@
       "targetPkField": "Docentry",
       "pkFiled":  "id",
       "pkFiledGenStrategy": "auto_increase"
-    },{
+    },
+    {
       "fields": [
         {
           "sourceFieldName": "field0006",
@@ -155,16 +156,15 @@
           "tableName": "formson_21055",
           "targetFieldName": "Rate",
           "targetFieldType": "float"
+        },{
+          "sourceFieldName": "sort",
+          "sourceFieldType": "int",
+          "tableName": "formson_21055",
+          "targetFieldName": "LineNum",
+          "targetFieldType": "int"
         }
       ],
       "extendFields": [
-        {
-          "sourceFieldName": "LineNum",
-          "sourceFieldType": "self_increase",
-          "tableName": "formson_21055",
-          "targetFieldName": "LineNum",
-          "targetFieldType": "self_increase"
-        },
         {
           "sourceFieldName": "Docentry",
           "sourceFieldType": "main",
@@ -178,6 +178,62 @@
       "targetPkField": "Docentry",
       "pkFiled":  "id",
       "pkFiledGenStrategy": "auto_increase"
+    },
+    {
+      "fields": [
+        {
+          "sourceFieldName": "field0040",
+          "sourceFieldType": "string",
+          "tableName": "formson_21056",
+          "targetFieldName": "TYPE_NAME",
+          "targetFieldType": "string"
+        },{
+          "sourceFieldName": "field0068",
+          "sourceFieldType": "enum",
+          "tableName": "formson_21056",
+          "targetFieldName": "TAX_RATE",
+          "targetFieldType": "string"
+        },{
+          "sourceFieldName": "field0041",
+          "sourceFieldType": "enum",
+          "tableName": "formson_21056",
+          "targetFieldName": "FYLX_MAIN",
+          "targetFieldType": "float"
+        },{
+          "sourceFieldName": "field0042",
+          "sourceFieldType": "float",
+          "tableName": "formson_21056",
+          "targetFieldName": "XSE",
+          "targetFieldType": "float"
+        },{
+          "sourceFieldName": "field0043",
+          "sourceFieldType": "float",
+          "tableName": "formson_21056",
+          "targetFieldName": "YJCB",
+          "targetFieldType": "float"
+        },{
+          "sourceFieldName": "sort",
+          "sourceFieldType": "int",
+          "tableName": "formson_21055",
+          "targetFieldName": "LineNum",
+          "targetFieldType": "int"
+        }
+      ],
+      "extendFields": [
+        {
+          "sourceFieldName": "Docentry",
+          "sourceFieldType": "main",
+          "tableName": "formson_21056",
+          "targetFieldName": "Docentry",
+          "targetFieldType": "main"
+        }
+      ],
+      "tableName": "formson_21056",
+      "targetTableName": "RDR7_OA2SAP",
+      "targetPkField": "Docentry",
+      "pkFiled":  "id",
+      "pkFiledGenStrategy": "auto_increase",
+      "dataBuilder":"com.seeyon"
     }
   ],
   "tableName": "formmain_21041"

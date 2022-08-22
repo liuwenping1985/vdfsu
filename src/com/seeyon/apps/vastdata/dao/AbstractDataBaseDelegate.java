@@ -76,6 +76,7 @@ public abstract class AbstractDataBaseDelegate implements DataBaseDelegate {
         StringBuilder insertSQL = new StringBuilder("INSERT INTO " + tName);
         StringBuilder insertKeys = new StringBuilder();
         StringBuilder insertValues = new StringBuilder();
+
         for (FieldMappingVo field : fmv.getFields()) {
             Object val = data.get(field.getTargetFieldName());
             if (val != null && !"null".equals(val)) {
@@ -95,12 +96,7 @@ public abstract class AbstractDataBaseDelegate implements DataBaseDelegate {
         if (pkF != null) {
             String st = fmv.getPkFiledGenStrategy();
             switch (st) {
-                case "auto_increase": {
-//                    Long id = UUID.randomUUID().getMostSignificantBits();
-//                    insertKeys.append(",").append(pkF);
-//                    insertValues.append(",").append(id.intValue());
-                    break;
-                }
+                case "auto_increase":
                 case "main": {
                 }
                 default: {
@@ -154,7 +150,7 @@ public abstract class AbstractDataBaseDelegate implements DataBaseDelegate {
         if (updateKeys.toString().isEmpty()) {
             return "";
         }
-
+        updateSQL.append(updateKeys.toString());
         updateSQL.append(" where " + tPK + "=" + tv(tPkVal));
         return updateSQL.toString();
 
@@ -179,8 +175,9 @@ public abstract class AbstractDataBaseDelegate implements DataBaseDelegate {
     private boolean executeUpdate(Connection conn, String sql) {
         JDBCAgent agent = new JDBCAgent(conn);
         try {
+            LOG.info("BEFORE EXECUTE[" + sql.hashCode() + "]:" + sql);
             int ret = agent.execute(sql);
-            LOG.info("EXECUTE:" + sql);
+            LOG.info("after EXECUTE:[" + sql.hashCode() + "]" + ret);
             return ret > 0;
         } catch (Exception e) {
             e.printStackTrace();
@@ -201,7 +198,8 @@ public abstract class AbstractDataBaseDelegate implements DataBaseDelegate {
     }
 
     @Override
-    public void delegate(DataSource dataSource, FormMappingVo fmv, Map data) {
+    public void delegate(DataSource dataSource, FormMappingVo fmv, Map data, Map oaData) {
+        boolean isOldSap = "否".equals(data.remove("IS_OLD_SAP"));
         boolean isInsert = isInsert(dataSource, fmv, data);
         if (isInsert) {
             try {
@@ -240,30 +238,56 @@ public abstract class AbstractDataBaseDelegate implements DataBaseDelegate {
                 List<Map> dataList = (List<Map>) data.get(sfmv.getTargetTableName());
                 List<String> insertSQLList = new ArrayList<>();
                 if (!CollectionUtils.isEmpty(dataList)) {
-                    int index = 1;
-                    for (Map dm : dataList) {
-                        dm.put(pkf, pkVal);
-                        insertSQLList.add(buildInsertSQL(sfmv, dm, index));
-                        index++;
+                    String dataBuilder = sfmv.getDataBuilder();
+                    if (!StringUtils.isEmpty(dataBuilder)) {
+                        Class cls = null;
+                        Object obj = null;
+                        try {
+                            cls = Class.forName(dataBuilder);
+                            obj = cls.newInstance();
+                        } catch (Exception | Error e) {
+                            LOG.error(e.getMessage(), e);
+                            e.printStackTrace();
+                        }
+                        if (obj instanceof VastDataComplicatedDataBuilder) {
+                            VastDataComplicatedDataBuilder builder = (VastDataComplicatedDataBuilder) obj;
+                            List<String> sqlList = builder.builderInsertSQL(data, dataList, sfmv, oaData);
+                            if (!CollectionUtils.isEmpty(sqlList)) {
+                                insertSQLList.addAll(sqlList);
+                            }
+
+                        } else {
+                            LOG.error("NO DATA BUILDER FOUNDED!");
+                        }
+
+
+                    } else {
+                        int index = 1;
+                        for (Map dm : dataList) {
+                            dm.put(pkf, pkVal);
+                            insertSQLList.add(buildInsertSQL(sfmv, dm, index));
+                            index++;
+                        }
                     }
+
 
                 }
                 if (!CollectionUtils.isEmpty(insertSQLList)) {
                     Connection conn = dataSource.getConnection();
                     JDBCAgent agent = new JDBCAgent(conn);
                     try {
-                        insertSQLList.stream().forEach(obj -> {
+                        for (String insertSQL : insertSQLList) {
                             try {
-                                LOG.info("EXECUTE:" + obj);
-                               int ret =  agent.execute(obj);
-                                LOG.info("EXECUTE finish:" + ret);
-                            }catch(Exception e){
+                                LOG.info("EXECUTE[" + insertSQL.hashCode() + "]:" + insertSQL);
+                                int ret = agent.execute(insertSQL);
+                                LOG.info("EXECUTE[" + insertSQL.hashCode() + "] finish:" + ret);
+                            } catch (Exception e) {
                                 e.printStackTrace();
-                                LOG.error("EXECUTE ERROR:"+e.getMessage(),e);
+                                LOG.error("EXECUTE ERROR:" + e.getMessage(), e);
                             }
 
-                        });
-                       // agent.executeBatch(insertSQLList);
+                        }
+                        // agent.executeBatch(insertSQLList);
 
                     } catch (Exception e) {
                         e.printStackTrace();

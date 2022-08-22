@@ -17,7 +17,7 @@ public class VastDataSapDao {
     private static final Log LOG = CtpLogFactory.getLog(VastDataSapDao.class);
     private  DataSource dataSource = null;
     private  DataSource dataSource2 = null;
-
+    private  DataSource dataSource3 = null;
     public VastDataSapDao() {
         init();
     }
@@ -51,10 +51,24 @@ public class VastDataSapDao {
             LOG.info("初始化SAP2连接池失败！西内！");
             LOG.error(e.getLocalizedMessage(), e);
         }
+        LOG.info("初始化SAP3连接池");
+        ComboPooledDataSource comboPooledDataSource3 = new ComboPooledDataSource();
+        try {
+            comboPooledDataSource3.setDriverClass(SystemProperties.getInstance().getProperty("vastdata.sap3.driver"));
+            comboPooledDataSource3.setJdbcUrl(SystemProperties.getInstance().getProperty("vastdata.sap3.jdbcurl"));
+            comboPooledDataSource3.setUser(SystemProperties.getInstance().getProperty("vastdata.sap3.user"));
+            comboPooledDataSource3.setPassword(SystemProperties.getInstance().getProperty("vastdata.sap3.pwd"));
+            comboPooledDataSource3.setInitialPoolSize(2);
+            comboPooledDataSource3.setMaxPoolSize(3);
+            dataSource3 = comboPooledDataSource2;
+        } catch (Exception e) {
+            LOG.info("初始化SAP3连接池失败！西内！");
+            LOG.error(e.getLocalizedMessage(), e);
+        }
     }
 
 
-    public void insertOrUpdate(FormMappingVo fmv, Map data) {
+    public void insertOrUpdate(FormMappingVo fmv, Map data,Map oaData) {
         try {
 
             String delegateClass = AppContext.getSystemProperty("vastdata." + fmv.getCode());
@@ -64,7 +78,7 @@ public class VastDataSapDao {
                 Object obj = cls.newInstance();
                 if (obj instanceof DataBaseDelegate) {
                     LOG.info("调用代理类处理方法");
-                    ((DataBaseDelegate) obj).delegate(getDataSource(data), fmv, data);
+                    ((DataBaseDelegate) obj).delegate(getDataSource(data), fmv, data,oaData);
                 }
             } else {
                 LOG.error("找不到数据库处理代理！[code:" + fmv.getCode() + "]");
@@ -78,7 +92,7 @@ public class VastDataSapDao {
 
     public DataSource getDataSource(Map data) {
 
-        Object val = data.remove("IS_OLD_SAP");
+        Object val = data.get("IS_OLD_SAP");
         if("否".equals(val)){
             return dataSource2;
         }
@@ -114,6 +128,10 @@ public class VastDataSapDao {
 
     public DataSource getDataSource2() {
         return dataSource2;
+    }
+
+    public DataSource getDataSource3() {
+        return dataSource3;
     }
 
 }
