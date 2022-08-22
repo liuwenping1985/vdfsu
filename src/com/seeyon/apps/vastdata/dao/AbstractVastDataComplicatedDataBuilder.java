@@ -48,7 +48,8 @@ public abstract class AbstractVastDataComplicatedDataBuilder implements VastData
         if (CollectionUtils.isEmpty(slaveData)) {
             return sqlList;
         }
-        String tableName = sfmv.getTableName();
+        String tableName = sfmv.getTargetTableName();
+        
         //从主表里那拿数据
         Map<String, String> keyMaps = getMainFieldMapping();
         List<RDR7OA2SAP> rdr7OA2SAPList = new ArrayList<>();

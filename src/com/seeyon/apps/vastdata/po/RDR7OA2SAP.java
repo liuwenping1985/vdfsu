@@ -1,8 +1,8 @@
 package com.seeyon.apps.vastdata.po;
 
-import com.alibaba.fastjson.annotation.JSONField;
-
-
+/**
+ * BJHL21-030206000
+ */
 public class RDR7OA2SAP {
 
 
