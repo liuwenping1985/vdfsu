@@ -3,6 +3,8 @@ package com.seeyon.apps.vastdata.dao;
 import com.seeyon.apps.vastdata.vo.FieldMappingVo;
 import com.seeyon.apps.vastdata.vo.FormMappingVo;
 import com.seeyon.apps.vastdata.vo.SlaveFormMappingVo;
+import com.seeyon.ctp.common.AppContext;
+import com.seeyon.ctp.common.exceptions.BusinessException;
 import com.seeyon.ctp.common.log.CtpLogFactory;
 import com.seeyon.ctp.util.JDBCAgent;
 import org.apache.commons.lang.StringUtils;
@@ -253,7 +255,24 @@ public abstract class AbstractDataBaseDelegate implements DataBaseDelegate {
                             VastDataComplicatedDataBuilder builder = (VastDataComplicatedDataBuilder) obj;
                             List<String> sqlList = builder.builderInsertSQL(data, dataList, sfmv, oaData);
                             if (!CollectionUtils.isEmpty(sqlList)) {
-                                insertSQLList.addAll(sqlList);
+                                if(isOldSap){
+                                   VastDataSapDao vastDataSapDao = (VastDataSapDao)AppContext.getBean("vastDataSapDao");
+                                   DataSource ds3 = vastDataSapDao.getDataSource3();
+                                   JDBCAgent agent = new JDBCAgent(ds3.getConnection());
+                                    for(String sql:sqlList){
+                                        LOG.info("BEFORE EXECUTE:"+sql);
+                                        try {
+                                            int ret = agent.execute(sql);
+                                            LOG.info("AFTER EXECUTE:"+ret);
+                                        } catch (Exception e) {
+                                            LOG.error("执行错误:"+e.getMessage(),e);
+                                        }
+                                    }
+                                   agent.close();
+                                }else{
+                                    insertSQLList.addAll(sqlList);
+                                }
+
                             }
 
                         } else {

@@ -11,14 +11,14 @@
         <sap2>
             <!-- 需要做URL digest的URL注册，空格分隔1为uri地址，2为method（没有可以省略），3为digest参数名 -->
             <driver>com.microsoft.sqlserver.jdbc.SQLServerDriver</driver>
-            <jdbcurl>jdbc:sqlserver://192.168.1.21:1433;DatabaseName=TransDB_N</jdbcurl>
+            <jdbcurl>jdbc:sqlserver://192.168.1.21:1433;DatabaseName=TransDB</jdbcurl>
             <user>OAUser</user>
             <pwd>OAUser@Seadata.com.cn</pwd>
         </sap2>
         <sap3>
             <!-- 需要做URL digest的URL注册，空格分隔1为uri地址，2为method（没有可以省略），3为digest参数名 -->
             <driver>com.microsoft.sqlserver.jdbc.SQLServerDriver</driver>
-            <jdbcurl>jdbc:sqlserver://192.168.1.21:1433;DatabaseName=TransDB</jdbcurl>
+            <jdbcurl>jdbc:sqlserver://192.168.1.21:1433;DatabaseName=TransDB_N</jdbcurl>
             <user>OAUser</user>
             <pwd>OAUser@Seadata.com.cn</pwd>
         </sap3>

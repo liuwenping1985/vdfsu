@@ -233,7 +233,7 @@
       "targetPkField": "Docentry",
       "pkFiled":  "id",
       "pkFiledGenStrategy": "auto_increase",
-      "dataBuilder":"com.seeyon"
+      "dataBuilder":"com.seeyon.apps.vastdata.dao.Xmfxbg2022CDB"
     }
   ],
   "tableName": "formmain_21041"

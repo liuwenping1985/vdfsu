@@ -136,6 +136,62 @@
       "targetPkField": "Docentry",
       "pkFiled":  "id",
       "pkFiledGenStrategy": "auto_increase"
+    },
+    {
+      "fields": [
+        {
+          "sourceFieldName": "field0033",
+          "sourceFieldType": "string",
+          "tableName": "formson_21185",
+          "targetFieldName": "TYPE_NAME",
+          "targetFieldType": "string"
+        },{
+          "sourceFieldName": "field0036",
+          "sourceFieldType": "enum",
+          "tableName": "formson_21185",
+          "targetFieldName": "TAX_RATE",
+          "targetFieldType": "string"
+        },{
+          "sourceFieldName": "field0035",
+          "sourceFieldType": "enum",
+          "tableName": "formson_21185",
+          "targetFieldName": "FYLX_MAIN",
+          "targetFieldType": "float"
+        },{
+          "sourceFieldName": "field0039",
+          "sourceFieldType": "float",
+          "tableName": "formson_21185",
+          "targetFieldName": "XSE",
+          "targetFieldType": "float"
+        },{
+          "sourceFieldName": "field0040",
+          "sourceFieldType": "float",
+          "tableName": "formson_21185",
+          "targetFieldName": "YJCB",
+          "targetFieldType": "float"
+        },{
+          "sourceFieldName": "sort",
+          "sourceFieldType": "int",
+          "tableName": "formson_21185",
+          "targetFieldName": "LineNum",
+          "targetFieldType": "int"
+        }
+      ],
+      "extendFields": [
+        {
+          "sourceFieldName": "Docentry",
+          "sourceFieldType": "main",
+          "tableName": "formson_21185",
+          "targetFieldName": "Docentry",
+          "targetFieldType": "main"
+        }
+      ],
+      "tableName": "formson_21185",
+      "targetTableName": "RDR7_OA2SAP",
+      "targetPkField": "Docentry",
+      "pkFiled":  "id",
+      "pkFiledGenStrategy": "auto_increase",
+      "dataBuilder":"com.seeyon.apps.vastdata.dao.Xmfxbgxg2022CDB"
     }
   ],
   "tableName": "formmain_21179"
