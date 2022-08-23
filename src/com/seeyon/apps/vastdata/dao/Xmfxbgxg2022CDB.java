@@ -10,12 +10,11 @@ import java.util.Map;
 
 public class Xmfxbgxg2022CDB extends AbstractVastDataComplicatedDataBuilder {
     private static final Log LOG = CtpLogFactory.getLog(Xmfxbgxg2022CDB.class);
-    private boolean isInit = false;
 
-    private Map<String,String> dataMap = new HashMap<>();
 
-    private void init(){
-        isInit = true;
+    private static Map<String,String> dataMap = new HashMap<>();
+
+    static{
         dataMap.put("field0044","预计成本-投标费用");
         dataMap.put("field0048","预计成本-市场费用");
         dataMap.put("field0052","预计成本-运输保险");
@@ -31,9 +30,7 @@ public class Xmfxbgxg2022CDB extends AbstractVastDataComplicatedDataBuilder {
     }
     @Override
     public Map<String, String> getMainFieldMapping() {
-        if(isInit){
-            init();
-        }
+
         return dataMap;
     }
 

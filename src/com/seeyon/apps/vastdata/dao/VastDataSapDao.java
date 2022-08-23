@@ -60,7 +60,7 @@ public class VastDataSapDao {
             comboPooledDataSource3.setPassword(SystemProperties.getInstance().getProperty("vastdata.sap3.pwd"));
             comboPooledDataSource3.setInitialPoolSize(2);
             comboPooledDataSource3.setMaxPoolSize(3);
-            dataSource3 = comboPooledDataSource2;
+            dataSource3 = comboPooledDataSource3;
         } catch (Exception e) {
             LOG.info("初始化SAP3连接池失败！西内！");
             LOG.error(e.getLocalizedMessage(), e);

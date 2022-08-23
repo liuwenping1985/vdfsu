@@ -1,5 +1,6 @@
 package com.seeyon.apps.vastdata.dao;
 
+import com.alibaba.druid.util.StringUtils;
 import com.seeyon.apps.vastdata.po.RDR7OA2SAP;
 import com.seeyon.apps.vastdata.util.WebUtil;
 import com.seeyon.apps.vastdata.vo.FieldMappingVo;
@@ -63,6 +64,9 @@ public abstract class AbstractVastDataComplicatedDataBuilder implements VastData
             RDR7OA2SAP item = new RDR7OA2SAP();
             item.setAmount(WebUtil.getFloat(xse));
             item.setDocentry(docentry);
+            if(String.valueOf(fylx).contains(" ")){
+                fylx = String.valueOf(fylx).replaceAll(" "," ");
+            }
             item.setFylx("销售额-"+fylx+"-"+taxRate);
             item.setLineNum(index);
             rdr7OA2SAPList.add(item);
@@ -94,5 +98,6 @@ public abstract class AbstractVastDataComplicatedDataBuilder implements VastData
         }
         return sqlList;
     }
+
 
 }

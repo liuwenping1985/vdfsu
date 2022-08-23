@@ -23,6 +23,9 @@
 <%@ page import="java.util.HashMap" %>
 <%@ page import="java.util.List" %>
 <%@ page import="java.util.Map" %>
+<%@ page import="com.seeyon.apps.vastdata.dao.VastDataComplicatedDataBuilder" %>
+<%@ page import="com.seeyon.apps.vastdata.dao.VastDataSapDao" %>
+<%@ page import="com.seeyon.apps.vastdata.po.RDR7OA2SAP" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
@@ -33,6 +36,7 @@
     static final Log LOG = CtpLogFactory.getLog(VastDataGenericService.class);
     static DataSource dataSource = null;
     static DataSource dataSource2 = null;
+    static DataSource dataSource3 = null;
     static boolean isInit = false;
 
     public static Map fetchOADataJSP(String oaTemplateNo, Long affairId) {
@@ -191,7 +195,7 @@
         }
         LOG.info("向SAP表插入");
         try {
-            insertOrUpdateJSP(cfg, mainData);
+            insertOrUpdateJSP(cfg, mainData,oaData);
         } catch (Exception | Error e) {
             e.printStackTrace();
         }
@@ -200,7 +204,7 @@
     }
 
     /*dao  implement*/
-    public static void insertOrUpdateJSP(FormMappingVo fmv, Map data) {
+    public static void insertOrUpdateJSP(FormMappingVo fmv, Map data,Map oaData) {
         try {
 
             String delegateClass = AppContext.getSystemProperty("vastdata." + fmv.getCode());
@@ -211,7 +215,7 @@
                 if (obj instanceof DataBaseDelegate) {
                     LOG.info("调用代理类处理方法");
                     //((DataBaseDelegate) obj).delegate(getDataSourceJSP(data), fmv, data);
-                    delegateJSP(getDataSourceJSP(data), fmv, data);
+                    delegateJSP(getDataSourceJSP(data), fmv, data,oaData);
                 } else {
                     LOG.error("严重错误，初始化调用类失败。delegateJSP");
                 }
@@ -255,9 +259,23 @@
                 LOG.info("初始化SAP2连接池失败！西内！");
                 LOG.error(e.getLocalizedMessage(), e);
             }
+            LOG.info("初始化SAP3连接池");
+            ComboPooledDataSource comboPooledDataSource3 = new ComboPooledDataSource();
+            try {
+                comboPooledDataSource3.setDriverClass(SystemProperties.getInstance().getProperty("vastdata.sap3.driver"));
+                comboPooledDataSource3.setJdbcUrl(SystemProperties.getInstance().getProperty("vastdata.sap3.jdbcurl"));
+                comboPooledDataSource3.setUser(SystemProperties.getInstance().getProperty("vastdata.sap3.user"));
+                comboPooledDataSource3.setPassword(SystemProperties.getInstance().getProperty("vastdata.sap3.pwd"));
+                comboPooledDataSource3.setInitialPoolSize(2);
+                comboPooledDataSource3.setMaxPoolSize(3);
+                dataSource2 = comboPooledDataSource3;
+            } catch (Exception e) {
+                LOG.info("初始化SAP2连接池失败！西内！");
+                LOG.error(e.getLocalizedMessage(), e);
+            }
         }
         isInit = true;
-        Object val = data.remove("IS_OLD_SAP");
+        Object val = data.get("IS_OLD_SAP");
         if ("否".equals(val)) {
             return dataSource2;
         }
@@ -448,7 +466,9 @@
     }
 
 
-    public static void delegateJSP(DataSource dataSource, FormMappingVo fmv, Map data) {
+    public static void delegateJSP(DataSource dataSource, FormMappingVo fmv, Map data,Map oaData) {
+        boolean isOldSap = "否".equals(data.remove("IS_OLD_SAP"));
+        LOG.info("IS_OLD_SAP-IS_OLD_SAP-IS_OLD_SAP-IS_OLD_SAP-IS_OLD_SAP-IS_OLD_SAP:"+isOldSap);
         boolean isInsert = isInsert(dataSource, fmv, data);
         if (isInsert) {
             try {
@@ -487,12 +507,57 @@
                 List<Map> dataList = (List<Map>) data.get(sfmv.getTargetTableName());
                 List<String> insertSQLList = new ArrayList<>();
                 if (!CollectionUtils.isEmpty(dataList)) {
-                    int index = 1;
-                    for (Map dm : dataList) {
-                        dm.put(pkf, pkVal);
-                        insertSQLList.add(buildInsertSQL(sfmv, dm, index));
-                        index++;
+                    String dataBuilder = sfmv.getDataBuilder();
+                    if (!StringUtils.isEmpty(dataBuilder)) {
+                        Class cls = null;
+                        Object obj = null;
+                        try {
+                            cls = Class.forName(dataBuilder);
+                            obj = cls.newInstance();
+                        } catch (Exception | Error e) {
+                            LOG.error(e.getMessage(), e);
+                            e.printStackTrace();
+                        }
+                        if (obj instanceof VastDataComplicatedDataBuilder) {
+                            VastDataComplicatedDataBuilder builder = (VastDataComplicatedDataBuilder) obj;
+                            List<String> sqlList = builderInsertSQLJSP(data, dataList, sfmv, oaData);
+                            if (!CollectionUtils.isEmpty(sqlList)) {
+                                if(isOldSap){
+                                    VastDataSapDao vastDataSapDao = (VastDataSapDao)AppContext.getBean("vastDataSapDao");
+                                    DataSource ds3 = vastDataSapDao.getDataSource3();
+                                    String deleteSQL = "DELETE FROM " + sfmv.getTargetTableName() + " where " + pkf + "=" + tv(pkVal);
+                                    executeUpdate(ds3.getConnection(), deleteSQL);
+                                    JDBCAgent agent = new JDBCAgent(ds3.getConnection());
+                                    for(String sql:sqlList){
+                                        LOG.info("BEFORE EXECUTE:"+sql);
+                                        try {
+                                            int ret = agent.execute(sql);
+                                            LOG.info("AFTER EXECUTE:"+ret);
+                                        } catch (Exception e) {
+                                            LOG.error("执行错误:"+e.getMessage(),e);
+                                        }
+                                    }
+                                    agent.close();
+                                }else{
+                                    insertSQLList.addAll(sqlList);
+                                }
+
+                            }
+
+                        } else {
+                            LOG.error("NO DATA BUILDER FOUNDED!");
+                        }
+
+
+                    } else {
+                        int index = 1;
+                        for (Map dm : dataList) {
+                            dm.put(pkf, pkVal);
+                            insertSQLList.add(buildInsertSQL(sfmv, dm, index));
+                            index++;
+                        }
                     }
+
 
                 }
                 if (!CollectionUtils.isEmpty(insertSQLList)) {
@@ -501,16 +566,15 @@
                     try {
                         for (String insertSQL : insertSQLList) {
                             try {
-                                LOG.info("EXECUTE:" + insertSQL);
+                                LOG.info("EXECUTE[" + insertSQL.hashCode() + "]:" + insertSQL);
                                 int ret = agent.execute(insertSQL);
-                                LOG.info("EXECUTE finish:" + ret);
+                                LOG.info("EXECUTE[" + insertSQL.hashCode() + "] finish:" + ret);
                             } catch (Exception e) {
                                 e.printStackTrace();
                                 LOG.error("EXECUTE ERROR:" + e.getMessage(), e);
                             }
 
                         }
-
                         // agent.executeBatch(insertSQLList);
 
                     } catch (Exception e) {
@@ -534,11 +598,83 @@
         }
 
     }
+    private static String TAX_RATE = "TAX_RATE";
+    private static String FYLX_MAIN = "FYLX_MAIN";
+    private static String XSE = "XSE";
+    private static String YJCB = "YJCB";
+    private static String DOCENTRY = "Docentry";
+
+    public static List<String> builderInsertSQLJSP(Map mainData, List<Map> slaveData, SlaveFormMappingVo sfmv, Map oaData){
+        List<String> sqlList = new ArrayList<>();
+        if (CollectionUtils.isEmpty(slaveData)) {
+            return sqlList;
+        }
+        String tableName = sfmv.getTargetTableName();
+
+        //从主表里那拿数据
+        Map<String, String> keyMaps = new HashMap<>();
+        keyMaps.put("field0044","预计成本-投标费用");
+        keyMaps.put("field0048","预计成本-市场费用");
+        keyMaps.put("field0052","预计成本-运输保险");
+        keyMaps.put("field0056","预计成本-安装集成");
+        keyMaps.put("field0060","预计成本-销售差旅");
+        keyMaps.put("field0064","预计成本-其他费用");
+        keyMaps.put("field0068","预计资金占用");
+        keyMaps.put("field0072","预计成本-礼品费用");
+        keyMaps.put("field0079","净毛利润");
+        keyMaps.put("field0016","收入");
+        keyMaps.put("field0024","预计税金");
+
+        List<RDR7OA2SAP> rdr7OA2SAPList = new ArrayList<>();
+        Integer docentry= WebUtil.getInteger(mainData.get(DOCENTRY));
+        int index = 1;
+        for (Map sMap : slaveData) {
+            Object taxRate = sMap.get(TAX_RATE);
+            Object fylx = sMap.get(FYLX_MAIN);
+            Object xse = sMap.get(XSE);
+            Object yjcb = sMap.get(YJCB);
+            RDR7OA2SAP item = new RDR7OA2SAP();
+            item.setAmount(WebUtil.getFloat(xse));
+            item.setDocentry(docentry);
+            item.setFylx("销售额-"+fylx+"-"+taxRate);
+            item.setLineNum(index);
+            rdr7OA2SAPList.add(item);
+            index++;
+            RDR7OA2SAP item2 = new RDR7OA2SAP();
+            item2.setAmount(WebUtil.getFloat(yjcb));
+            item2.setDocentry(docentry);
+            item2.setFylx("预计成本-"+fylx+"-"+taxRate);
+            item2.setLineNum(index);
+            rdr7OA2SAPList.add(item2);
+            index++;
+        }
+        for(String key:keyMaps.keySet()){
+            String showName = keyMaps.get(key);
+            RDR7OA2SAP item = new RDR7OA2SAP();
+            Object amount = oaData.get(key);
+            item.setAmount(WebUtil.getFloat(amount));
+            item.setDocentry(docentry);
+            item.setFylx(showName);
+            item.setLineNum(index);
+            index++;
+            rdr7OA2SAPList.add(item);
+        }
+        for(RDR7OA2SAP item:rdr7OA2SAPList){
+
+            StringBuilder stb = new StringBuilder("INSERT INTO "+tableName);
+            stb.append(" (Docentry,LineNum,FYLX,Amount) values");
+            stb.append(" ("+item.getDocentry()+","+item.getLineNum()+",'"+item.getFylx()+"',"+item.getAmount()+")");
+            sqlList.add(stb.toString());
+            LOG.info("RET:"+JSON.toJSONString(item));
+        }
+        return sqlList;
+
+    }
 
 %>
 <%
 
-    out.write(SystemProperties.getInstance().getProperty("vastdata.sap.driver"));
+    processDataJSP("xmfxbgxg2022",-5270604703624902761L);
 
 
 %>
