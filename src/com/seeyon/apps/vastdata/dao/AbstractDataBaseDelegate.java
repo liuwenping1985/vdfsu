@@ -192,7 +192,7 @@ public abstract class AbstractDataBaseDelegate implements DataBaseDelegate {
                         conn.close();
                     }
                 } catch (Exception throwables) {
-
+                    throwables.printStackTrace();
                 }
             }
         }
@@ -300,7 +300,7 @@ public abstract class AbstractDataBaseDelegate implements DataBaseDelegate {
                                 LOG.info("EXECUTE[" + insertSQL.hashCode() + "]:" + insertSQL);
                                 int ret = agent.execute(insertSQL);
                                 LOG.info("EXECUTE[" + insertSQL.hashCode() + "] finish:" + ret);
-                            } catch (Exception e) {
+                            } catch (Exception|Error e) {
                                 e.printStackTrace();
                                 LOG.error("EXECUTE ERROR:" + e.getMessage(), e);
                             }

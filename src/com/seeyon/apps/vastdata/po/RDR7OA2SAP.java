@@ -12,7 +12,6 @@ public class RDR7OA2SAP {
 
     private String fylx;
 
-
     private Float amount;
 
     public Integer getDocentry() {
