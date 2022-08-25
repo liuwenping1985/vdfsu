@@ -39,6 +39,9 @@ public class RDR7OA2SAP {
     }
 
     public Float getAmount() {
+        if (amount == null) {
+            return 0f;
+        }
         return amount;
     }
 

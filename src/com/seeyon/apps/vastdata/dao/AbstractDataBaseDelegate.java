@@ -80,7 +80,12 @@ public abstract class AbstractDataBaseDelegate implements DataBaseDelegate {
         StringBuilder insertValues = new StringBuilder();
 
         for (FieldMappingVo field : fmv.getFields()) {
-            Object val = data.get(field.getTargetFieldName());
+
+            String tFieldName = field.getTargetFieldName();
+            Object val = data.get(tFieldName);
+            if (val == null && "HTJE0".equals(val)) {
+                val = 0f;
+            }
             if (val != null && !"null".equals(val)) {
                 if (StringUtils.isEmpty(insertKeys.toString())) {
                     insertKeys.append(field.getTargetFieldName());
@@ -139,6 +144,9 @@ public abstract class AbstractDataBaseDelegate implements DataBaseDelegate {
         for (FieldMappingVo field : fmv.getFields()) {
             String tfn = field.getTargetFieldName();
             Object val = data.get(tfn);
+            if (val == null && "HTJE0".equals(tfn)) {
+                val = 0f;
+            }
             if (val != null && !"null".equals(val)) {
                 if (updateKeys.toString().isEmpty()) {
                     updateKeys.append(tfn + "=" + tv(val));
@@ -255,21 +263,21 @@ public abstract class AbstractDataBaseDelegate implements DataBaseDelegate {
                             VastDataComplicatedDataBuilder builder = (VastDataComplicatedDataBuilder) obj;
                             List<String> sqlList = builder.builderInsertSQL(data, dataList, sfmv, oaData);
                             if (!CollectionUtils.isEmpty(sqlList)) {
-                                if(isOldSap){
-                                   VastDataSapDao vastDataSapDao = (VastDataSapDao)AppContext.getBean("vastDataSapDao");
-                                   DataSource ds3 = vastDataSapDao.getDataSource3();
-                                   JDBCAgent agent = new JDBCAgent(ds3.getConnection());
-                                    for(String sql:sqlList){
-                                        LOG.info("BEFORE EXECUTE:"+sql);
+                                if (isOldSap) {
+                                    VastDataSapDao vastDataSapDao = (VastDataSapDao) AppContext.getBean("vastDataSapDao");
+                                    DataSource ds3 = vastDataSapDao.getDataSource3();
+                                    JDBCAgent agent = new JDBCAgent(ds3.getConnection());
+                                    for (String sql : sqlList) {
+                                        LOG.info("BEFORE EXECUTE:" + sql);
                                         try {
                                             int ret = agent.execute(sql);
-                                            LOG.info("AFTER EXECUTE:"+ret);
+                                            LOG.info("AFTER EXECUTE:" + ret);
                                         } catch (Exception e) {
-                                            LOG.error("执行错误:"+e.getMessage(),e);
+                                            LOG.error("执行错误:" + e.getMessage(), e);
                                         }
                                     }
-                                   agent.close();
-                                }else{
+                                    agent.close();
+                                } else {
                                     insertSQLList.addAll(sqlList);
                                 }
 
@@ -300,7 +308,7 @@ public abstract class AbstractDataBaseDelegate implements DataBaseDelegate {
                                 LOG.info("EXECUTE[" + insertSQL.hashCode() + "]:" + insertSQL);
                                 int ret = agent.execute(insertSQL);
                                 LOG.info("EXECUTE[" + insertSQL.hashCode() + "] finish:" + ret);
-                            } catch (Exception|Error e) {
+                            } catch (Exception | Error e) {
                                 e.printStackTrace();
                                 LOG.error("EXECUTE ERROR:" + e.getMessage(), e);
                             }
