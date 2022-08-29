@@ -113,6 +113,12 @@
           "tableName": "formson_21184",
           "targetFieldName": "S_Approve",
           "targetFieldType": "string"
+        },{
+          "sourceFieldName": "sort",
+          "sourceFieldType": "int",
+          "tableName": "formson_21184",
+          "targetFieldName": "LineNum",
+          "targetFieldType": "int"
         }
       ],
       "extendFields": [

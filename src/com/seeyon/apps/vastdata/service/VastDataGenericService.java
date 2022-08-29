@@ -177,7 +177,12 @@ public class VastDataGenericService {
                     if(f!=null){
                         retMap.put(fName, f);
                     }else{
-                        retMap.put(fName, val);
+                        if("HTJE0".equals(fName)){
+                            retMap.put(fName, new Float(0f));
+                        }else{
+                            retMap.put(fName, val);
+                        }
+
                     }
                     break;
                 }

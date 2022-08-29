@@ -4,7 +4,6 @@ import com.seeyon.apps.vastdata.vo.FieldMappingVo;
 import com.seeyon.apps.vastdata.vo.FormMappingVo;
 import com.seeyon.apps.vastdata.vo.SlaveFormMappingVo;
 import com.seeyon.ctp.common.AppContext;
-import com.seeyon.ctp.common.exceptions.BusinessException;
 import com.seeyon.ctp.common.log.CtpLogFactory;
 import com.seeyon.ctp.util.JDBCAgent;
 import org.apache.commons.lang.StringUtils;
@@ -83,14 +82,14 @@ public abstract class AbstractDataBaseDelegate implements DataBaseDelegate {
 
             String tFieldName = field.getTargetFieldName();
             Object val = data.get(tFieldName);
-            if (val == null && "HTJE0".equals(val)) {
+            if (val == null && "HTJE0".equals(tFieldName)) {
                 val = 0f;
             }
             if (val != null && !"null".equals(val)) {
                 if (StringUtils.isEmpty(insertKeys.toString())) {
-                    insertKeys.append(field.getTargetFieldName());
+                    insertKeys.append(tFieldName);
                 } else {
-                    insertKeys.append(",").append(field.getTargetFieldName());
+                    insertKeys.append(",").append(tFieldName);
                 }
                 if (StringUtils.isEmpty(insertValues.toString())) {
                     insertValues.append(tv(val));
@@ -266,6 +265,9 @@ public abstract class AbstractDataBaseDelegate implements DataBaseDelegate {
                                 if (isOldSap) {
                                     VastDataSapDao vastDataSapDao = (VastDataSapDao) AppContext.getBean("vastDataSapDao");
                                     DataSource ds3 = vastDataSapDao.getDataSource3();
+                                    //这里要再删除一遍
+                                    String deleteSQL = "DELETE FROM " + sfmv.getTargetTableName() + " where " + pkf + "=" + tv(pkVal);
+                                    executeUpdate(ds3.getConnection(), deleteSQL);
                                     JDBCAgent agent = new JDBCAgent(ds3.getConnection());
                                     for (String sql : sqlList) {
                                         LOG.info("BEFORE EXECUTE:" + sql);
