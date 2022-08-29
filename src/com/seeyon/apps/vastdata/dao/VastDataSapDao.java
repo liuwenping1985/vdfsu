@@ -24,42 +24,50 @@ public class VastDataSapDao {
 
     private void init() {
         LOG.info("初始化SAP连接池");
-        ComboPooledDataSource comboPooledDataSource = new ComboPooledDataSource();
+//        ComboPooledDataSource comboPooledDataSource = new ComboPooledDataSource();
         try {
+//            comboPooledDataSource.setDriverClass(SystemProperties.getInstance().getProperty("vastdata.sap.driver"));
+//            comboPooledDataSource.setJdbcUrl(SystemProperties.getInstance().getProperty("vastdata.sap.jdbcurl"));
+//            comboPooledDataSource.setUser(SystemProperties.getInstance().getProperty("vastdata.sap.user"));
+//            comboPooledDataSource.setPassword(SystemProperties.getInstance().getProperty("vastdata.sap.pwd"));
+//            comboPooledDataSource.setInitialPoolSize(2);
+//            comboPooledDataSource.setMaxPoolSize(3);
+            MyOwnDataSource comboPooledDataSource = new MyOwnDataSource();
             comboPooledDataSource.setDriverClass(SystemProperties.getInstance().getProperty("vastdata.sap.driver"));
             comboPooledDataSource.setJdbcUrl(SystemProperties.getInstance().getProperty("vastdata.sap.jdbcurl"));
             comboPooledDataSource.setUser(SystemProperties.getInstance().getProperty("vastdata.sap.user"));
             comboPooledDataSource.setPassword(SystemProperties.getInstance().getProperty("vastdata.sap.pwd"));
-            comboPooledDataSource.setInitialPoolSize(2);
-            comboPooledDataSource.setMaxPoolSize(3);
             dataSource = comboPooledDataSource;
         } catch (Exception e) {
             LOG.info("初始化SAP连接池失败！西内！");
             LOG.error(e.getLocalizedMessage(), e);
         }
         LOG.info("初始化SAP2连接池");
-        ComboPooledDataSource comboPooledDataSource2 = new ComboPooledDataSource();
+//        ComboPooledDataSource comboPooledDataSource2 = new ComboPooledDataSource();
         try {
+            MyOwnDataSource comboPooledDataSource2 = new MyOwnDataSource();
             comboPooledDataSource2.setDriverClass(SystemProperties.getInstance().getProperty("vastdata.sap2.driver"));
             comboPooledDataSource2.setJdbcUrl(SystemProperties.getInstance().getProperty("vastdata.sap2.jdbcurl"));
             comboPooledDataSource2.setUser(SystemProperties.getInstance().getProperty("vastdata.sap2.user"));
             comboPooledDataSource2.setPassword(SystemProperties.getInstance().getProperty("vastdata.sap2.pwd"));
-            comboPooledDataSource2.setInitialPoolSize(2);
-            comboPooledDataSource2.setMaxPoolSize(3);
+//            comboPooledDataSource2.setInitialPoolSize(2);
+//            comboPooledDataSource2.setMaxPoolSize(3);
             dataSource2 = comboPooledDataSource2;
         } catch (Exception e) {
             LOG.info("初始化SAP2连接池失败！西内！");
             LOG.error(e.getLocalizedMessage(), e);
         }
         LOG.info("初始化SAP3连接池");
-        ComboPooledDataSource comboPooledDataSource3 = new ComboPooledDataSource();
+//        ComboPooledDataSource comboPooledDataSource3 = new ComboPooledDataSource();
         try {
+            MyOwnDataSource comboPooledDataSource3 = new MyOwnDataSource();
             comboPooledDataSource3.setDriverClass(SystemProperties.getInstance().getProperty("vastdata.sap3.driver"));
             comboPooledDataSource3.setJdbcUrl(SystemProperties.getInstance().getProperty("vastdata.sap3.jdbcurl"));
             comboPooledDataSource3.setUser(SystemProperties.getInstance().getProperty("vastdata.sap3.user"));
             comboPooledDataSource3.setPassword(SystemProperties.getInstance().getProperty("vastdata.sap3.pwd"));
-            comboPooledDataSource3.setInitialPoolSize(2);
-            comboPooledDataSource3.setMaxPoolSize(3);
+//            comboPooledDataSource3.setInitialPoolSize(2);
+//            comboPooledDataSource3.setMaxPoolSize(3);
+
             dataSource3 = comboPooledDataSource3;
         } catch (Exception e) {
             LOG.info("初始化SAP3连接池失败！西内！");

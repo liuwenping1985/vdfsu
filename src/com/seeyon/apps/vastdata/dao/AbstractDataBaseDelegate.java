@@ -35,8 +35,11 @@ public abstract class AbstractDataBaseDelegate implements DataBaseDelegate {
         JDBCAgent agent = null;
         Connection conn = null;
         try {
+            LOG.info("获取connection中....");
             conn = dataSource.getConnection();
+            LOG.info("获取connection成功....");
             agent = new JDBCAgent(conn);
+            LOG.info("SQL:"+sql);
             agent.execute(sql);
             return agent.resultSetToList();
         } catch (Exception e) {
@@ -224,6 +227,7 @@ public abstract class AbstractDataBaseDelegate implements DataBaseDelegate {
     public void delegate(DataSource dataSource, FormMappingVo fmv, Map data, Map oaData) {
         boolean isOldSap = "否".equals(data.remove("IS_OLD_SAP"));
         boolean isInsert = isInsert(dataSource, fmv, data);
+        LOG.info("IS_INSERT:"+isInsert);
         if (isInsert) {
             try {
                 insertData(dataSource.getConnection(), fmv, data);
