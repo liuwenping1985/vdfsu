@@ -123,13 +123,6 @@
       ],
       "extendFields": [
         {
-          "sourceFieldName": "LineNum",
-          "sourceFieldType": "self_increase",
-          "tableName": "formson_21184",
-          "targetFieldName": "LineNum",
-          "targetFieldType": "self_increase"
-        },
-        {
           "sourceFieldName": "Docentry",
           "sourceFieldType": "main",
           "tableName": "formson_21184",
