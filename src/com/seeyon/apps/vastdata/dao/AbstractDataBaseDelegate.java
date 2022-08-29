@@ -33,8 +33,10 @@ public abstract class AbstractDataBaseDelegate implements DataBaseDelegate {
 
     protected List<Map> queryDataList(DataSource dataSource, String sql) {
         JDBCAgent agent = null;
+        Connection conn = null;
         try {
-            agent = new JDBCAgent(dataSource.getConnection());
+            conn = dataSource.getConnection();
+            agent = new JDBCAgent(conn);
             agent.execute(sql);
             return agent.resultSetToList();
         } catch (Exception e) {
@@ -42,6 +44,13 @@ public abstract class AbstractDataBaseDelegate implements DataBaseDelegate {
         } finally {
             if (agent != null) {
                 agent.close();
+            }
+            if (conn != null) {
+                try {
+                    conn.close();
+                } catch (SQLException | Error e) {
+                    e.printStackTrace();
+                }
             }
         }
 
@@ -195,11 +204,16 @@ public abstract class AbstractDataBaseDelegate implements DataBaseDelegate {
             if (agent != null) {
                 try {
                     agent.close();
-                    if (conn != null) {
-                        conn.close();
-                    }
+
                 } catch (Exception throwables) {
                     throwables.printStackTrace();
+                }
+            }
+            if (conn != null) {
+                try {
+                    conn.close();
+                } catch (SQLException | Error e) {
+                    e.printStackTrace();
                 }
             }
         }
