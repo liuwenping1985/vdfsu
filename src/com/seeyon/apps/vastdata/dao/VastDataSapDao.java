@@ -103,8 +103,10 @@ public class VastDataSapDao {
         DataSource targetDataSource;
         if (dataSourceIndex == 1) {
             targetDataSource = dataSource;
-        } else {
+        } else if(dataSourceIndex == 2) {
             targetDataSource = dataSource2;
+        }else{
+            targetDataSource = dataSource3;
         }
         if (targetDataSource != null) {
             try {

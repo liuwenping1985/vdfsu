@@ -58,6 +58,10 @@ public class VastDataMappingService {
         return cfgContainer.get(code);
     }
 
+    public void reload(){
+        init();
+    }
+
     public static VastDataMappingService getInstance() {
         return Hoder.instance;
     }
