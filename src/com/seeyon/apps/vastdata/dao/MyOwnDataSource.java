@@ -13,11 +13,12 @@ public class MyOwnDataSource implements DataSource {
     private String jdbcUrl;
     private String user;
     private String password;
+
     @Override
-    public Connection getConnection(){
+    public Connection getConnection() {
         try {
             Class.forName(this.getDriverClass());
-            return DriverManager.getConnection(this.getJdbcUrl(),getUser(),getPassword());
+            return DriverManager.getConnection(this.getJdbcUrl(), getUser(), getPassword());
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -26,6 +27,12 @@ public class MyOwnDataSource implements DataSource {
 
     @Override
     public Connection getConnection(String username, String password) throws SQLException {
+        try {
+            Class.forName(this.getDriverClass());
+            return DriverManager.getConnection(this.getJdbcUrl(), username, password);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         return null;
     }
 

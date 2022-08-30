@@ -1,6 +1,5 @@
 package com.seeyon.apps.vastdata.dao;
 
-import com.mchange.v2.c3p0.ComboPooledDataSource;
 import com.seeyon.apps.vastdata.vo.FormMappingVo;
 import com.seeyon.ctp.common.AppContext;
 import com.seeyon.ctp.common.constants.SystemProperties;
